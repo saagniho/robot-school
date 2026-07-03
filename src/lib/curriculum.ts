@@ -44,7 +44,7 @@ export const CLASSES: SchoolClass[] = [
     vocab: ["AI", "learning"],
     part: { id: "eyes", label: "Eyes", icon: "👀" },
     term: 1,
-    live: false,
+    live: true,
   },
   {
     num: 2,

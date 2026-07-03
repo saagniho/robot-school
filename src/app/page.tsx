@@ -1,5 +1,30 @@
-import { CLASSES, GRADUATION, TERMS } from "@/lib/curriculum";
-import { StudentBot } from "@/components/student-bot";
+import Link from "next/link";
+import { CLASSES, GRADUATION, TERMS, type SchoolClass } from "@/lib/curriculum";
+import { HeroBot } from "@/components/hero-bot";
+import { ClassStatus } from "@/components/class-status";
+
+function CardBody({ c }: { c: SchoolClass }) {
+  return (
+    <>
+      <div className="classcard-top">
+        <span className="classnum">Class {c.num}</span>
+        <span className="partchip">
+          {c.part.icon} {c.part.label}
+        </span>
+      </div>
+      <h3>{c.title}</h3>
+      <p className="classhook">{c.hook}</p>
+      <p className="classlearns">
+        <b>Your robot learns</b> {c.learns}.
+      </p>
+      {c.live ? (
+        <ClassStatus slug={c.slug} />
+      ) : (
+        <div className="classstatus">{c.num === 2 ? "🔨 being built next" : "🔒 opens later"}</div>
+      )}
+    </>
+  );
+}
 
 export default function Home() {
   return (
@@ -32,8 +57,7 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-bot">
-          <StudentBot speech="beep…? boop…?" />
-          <p className="bot-caption">fresh from the factory · zero things known</p>
+          <HeroBot />
         </div>
       </section>
 
@@ -77,24 +101,17 @@ export default function Home() {
               <span className="term-name">{t.title}</span>
             </div>
             <div className="classlist">
-              {CLASSES.filter((c) => c.term === t.term).map((c) => (
-                <article key={c.slug} className={`classcard${c.live ? " live" : ""}`}>
-                  <div className="classcard-top">
-                    <span className="classnum">Class {c.num}</span>
-                    <span className="partchip">
-                      {c.part.icon} {c.part.label}
-                    </span>
-                  </div>
-                  <h3>{c.title}</h3>
-                  <p className="classhook">{c.hook}</p>
-                  <p className="classlearns">
-                    <b>Your robot learns</b> {c.learns}.
-                  </p>
-                  <div className="classstatus">
-                    {c.live ? "▶ in session" : c.num === 1 ? "🔨 being built first" : "🔒 opens later"}
-                  </div>
-                </article>
-              ))}
+              {CLASSES.filter((c) => c.term === t.term).map((c) =>
+                c.live ? (
+                  <Link key={c.slug} href={`/class/${c.slug}/`} className="classcard live classcard-go">
+                    <CardBody c={c} />
+                  </Link>
+                ) : (
+                  <article key={c.slug} className="classcard">
+                    <CardBody c={c} />
+                  </article>
+                ),
+              )}
             </div>
           </div>
         ))}
