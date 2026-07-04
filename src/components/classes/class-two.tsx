@@ -278,10 +278,17 @@ export function ClassTwo() {
       {stage === "bridge1" && (
         <section className="lsn-card">
           <h1>{score} out of {C2_MINI_EXAM.length}.</h1>
-          <p>
-            See it? {name} has only ever seen bananas. To a banana-only student,
-            EVERYTHING is a banana.
-          </p>
+          {wall.every((l) => l.label === "banana") ? (
+            <p>
+              See it? {name} has only ever seen bananas. To a banana-only student,
+              EVERYTHING is a banana.
+            </p>
+          ) : (
+            <p>
+              See it? {name} believes every sticker you stick — even the silly ones.
+              With only 3 fruits on the wall, it copied your stickers on EVERYTHING.
+            </p>
+          )}
           <p>{name} isn&rsquo;t broken — its study wall is just too small. It needs more to look at.</p>
           <button className="bigbtn lsn-go" onClick={() => setStage("teach2")}>
             🚚 Experiment 2: answer the door
@@ -323,11 +330,20 @@ export function ClassTwo() {
       {stage === "bridge2" && (
         <section className="lsn-card">
           <h1>{score} out of {C2_MINI_EXAM.length}!</h1>
-          <p>
-            Same exam. Same six fruits. Same robot. The only thing that changed
-            was the study wall — and the score jumped.
-          </p>
-          <p><b>THAT is the difference examples make.</b></p>
+          {score === C2_MINI_EXAM.length ? (
+            <>
+              <p>
+                Same exam. Same six fruits. Same robot. The only thing that changed
+                was the study wall — and the score jumped.
+              </p>
+              <p><b>THAT is the difference examples make.</b></p>
+            </>
+          ) : (
+            <p>
+              Same exam, bigger wall — but {name} still tripped. It answers with
+              whatever the stickers on its wall say… worth remembering, teacher.
+            </p>
+          )}
           <p>Okay, teacher. Lights off, school&rsquo;s closed. See you tomorrow for experiment 3…</p>
           <button className="bigbtn lsn-go" onClick={enterGremlin}>🌙 Good night, {name}</button>
         </section>
