@@ -12,6 +12,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { StudentBot } from "@/components/student-bot";
 import { FruitSticker } from "@/components/fruit-sticker";
+import { Dialogue } from "@/components/dialogue";
+import { MissionCard } from "@/components/mission-card";
+import { NowStrip } from "@/components/now-strip";
+import { RobotAnswer } from "@/components/robot-answer";
 import { loadSchool, setRobotName, markDone } from "@/lib/progress";
 import {
   applyRules,
@@ -29,7 +33,7 @@ import {
   type RuleColor,
 } from "@/lib/fruit";
 
-type Stage = "boot" | "name" | "meet" | "build" | "parade" | "pivot" | "teach" | "exam" | "report";
+type Stage = "boot" | "name" | "mission" | "meet" | "build" | "parade" | "pivot" | "teach" | "exam" | "report";
 
 const SLUG = "a-student-who-learns";
 const DICE_NAMES = ["Bolt", "Chip", "Pixel", "Beep", "Nova", "Gizmo", "Widget", "Zap", "Sprocket", "Dot"];
@@ -81,7 +85,7 @@ export function ClassOne() {
     const s = loadSchool();
     if (s.robotName) {
       setName(s.robotName);
-      setStage("meet");
+      setStage("mission");
     } else {
       setStage("name");
     }
@@ -97,7 +101,7 @@ export function ClassOne() {
     }
     setRobotName(n);
     setName(n.slice(0, 14));
-    setStage("meet");
+    setStage("mission");
   }
 
   function installRule() {
@@ -156,6 +160,7 @@ export function ClassOne() {
     switch (stage) {
       case "boot":
       case "name": return "beep…?";
+      case "mission": return "🎯 !";
       case "meet": return meetStep === 0 ? "boop?" : "？？？";
       case "build": return "⌛ ⚙️";
       case "parade": {
@@ -188,44 +193,61 @@ export function ClassOne() {
       {stage === "name" && (
         <section className="lsn-card">
           <h1>Meet your student.</h1>
-          <p>
-            Fresh from the factory. It knows nothing at all — not even its own name.
-            Naming it is your first job, teacher.
-          </p>
-          <form
-            className="rs1-nameform"
-            onSubmit={(e) => {
-              e.preventDefault();
-              submitName();
-            }}
+          <Dialogue
+            key="name"
+            lines={[
+              "Fresh from the factory.",
+              "It knows nothing — not even its own name.",
+              "Your first job, teacher: name it!",
+            ]}
           >
-            <input
-              className="rs1-nameinput"
-              value={nameDraft}
-              onChange={(e) => {
-                setNameDraft(e.target.value);
-                setNameHint(false);
-              }}
-              placeholder="type a robot name…"
-              maxLength={14}
-              aria-label="robot name"
-            />
-            <button
-              type="button"
-              className="rs1-dice"
-              aria-label="roll a random name"
-              onClick={() => {
-                setNameDraft(DICE_NAMES[diceIdx % DICE_NAMES.length]);
-                setDiceIdx(diceIdx + 1);
-                setNameHint(false);
+            <form
+              className="rs1-nameform"
+              onSubmit={(e) => {
+                e.preventDefault();
+                submitName();
               }}
             >
-              🎲
-            </button>
-            <button type="submit" className="bigbtn lsn-go">⚡ Name it!</button>
-          </form>
-          {nameHint && <p className="lsn-hint">Any name works — or roll the dice 🎲</p>}
+              <input
+                className="rs1-nameinput"
+                value={nameDraft}
+                onChange={(e) => {
+                  setNameDraft(e.target.value);
+                  setNameHint(false);
+                }}
+                placeholder="type a robot name…"
+                maxLength={14}
+                aria-label="robot name"
+              />
+              <button
+                type="button"
+                className="rs1-dice"
+                aria-label="roll a random name"
+                onClick={() => {
+                  setNameDraft(DICE_NAMES[diceIdx % DICE_NAMES.length]);
+                  setDiceIdx(diceIdx + 1);
+                  setNameHint(false);
+                }}
+              >
+                🎲
+              </button>
+              <button type="submit" className="bigbtn lsn-go">⚡ Name it!</button>
+            </form>
+            {nameHint && <p className="lsn-hint">Any name works — or roll the dice 🎲</p>}
+          </Dialogue>
         </section>
+      )}
+
+      {stage === "mission" && (
+        <MissionCard
+          mission={`Teach ${name} to tell apples from bananas.`}
+          steps={[
+            { icon: "📏", label: "try rules" },
+            { icon: "🍎🍌", label: "show fruits" },
+            { icon: "📝", label: "big exam" },
+          ]}
+          onStart={() => setStage("meet")}
+        />
       )}
 
       {stage === "meet" && (
@@ -233,21 +255,35 @@ export function ClassOne() {
           {meetStep === 0 ? (
             <>
               <h1>Say hi to {name}!</h1>
-              <p>Time for a quick check-up. Hold up a fruit and see what your robot makes of it.</p>
-              <button className="bigbtn lsn-go" onClick={() => setMeetStep(1)}>
-                Show {name} an apple 🍎
-              </button>
+              <Dialogue
+                key="meet-0"
+                lines={[
+                  "Quick check-up time!",
+                  `Hold up a fruit for ${name}.`,
+                  "See what your robot makes of it.",
+                ]}
+              >
+                <button className="bigbtn lsn-go" onClick={() => setMeetStep(1)}>
+                  Show {name} an apple 🍎
+                </button>
+              </Dialogue>
             </>
           ) : (
             <>
               <div className="rs1-fruitbox"><FruitSticker fruit={meetFruit} /></div>
-              <p>
-                Nothing. Not a clue. {name} has never seen a fruit in its life.
-                But robots are great at following instructions — so let’s write one.
-              </p>
-              <button className="bigbtn lsn-go" onClick={() => setStage("build")}>
-                ✍️ Write {name} a rule
-              </button>
+              <Dialogue
+                key="meet-1"
+                lines={[
+                  "Nothing. Not a clue.",
+                  `${name} has never seen a fruit in its life.`,
+                  "But robots are GREAT at following instructions.",
+                  "Let’s write one!",
+                ]}
+              >
+                <button className="bigbtn lsn-go" onClick={() => setStage("build")}>
+                  ✍️ Write {name} a rule
+                </button>
+              </Dialogue>
             </>
           )}
         </section>
@@ -255,6 +291,7 @@ export function ClassOne() {
 
       {stage === "build" && (
         <section className="lsn-card">
+          <NowStrip>Build a rule: pick a color, then a fruit</NowStrip>
           <h1>{rules.length === 0 ? "Fill in the rule." : "Patch it! One more rule."}</h1>
           {rules.length > 0 && (
             <div className="rs1-rules">
@@ -300,6 +337,7 @@ export function ClassOne() {
         const correct = verdict === item.fruit.kind;
         return (
           <section className="lsn-card">
+            <NowStrip>Test the rule — {name} guesses alone</NowStrip>
             <h1>Fruit parade!</h1>
             <div className="rs1-fruitbox"><FruitSticker fruit={item.fruit} /></div>
             {!revealed ? (
@@ -311,26 +349,34 @@ export function ClassOne() {
                 <div className={`rs1-stamp ${correct ? "good" : "bad"}`}>
                   {correct ? "✓ CORRECT" : verdict === null ? "? NO RULE FITS" : "✗ WRONG"}
                 </div>
-                <p>
-                  {correct
-                    ? "The rule works! Take that, fruit."
-                    : verdict === null
-                      ? `${name} flipped through its rules. Not one of them mentions this fruit. Total blank.`
-                      : `Your rule says ${item.fruit.color} → ${KIND_EMOJI[verdict]} ${verdict}. But this is a ${item.fruit.kind}! The rule just broke.`}
-                </p>
-                {correct ? (
-                  <button className="bigbtn lsn-go" onClick={() => { setQIdx(qIdx + 1); setRevealed(false); }}>
-                    Next fruit ▶
-                  </button>
-                ) : broken < 2 ? (
-                  <button className="bigbtn lsn-go" onClick={() => setStage("build")}>
-                    ✍️ Patch it: add one more rule
-                  </button>
-                ) : (
-                  <button className="bigbtn lsn-go" onClick={() => setStage("pivot")}>
-                    😵 …this isn’t working
-                  </button>
-                )}
+                <Dialogue
+                  key={`parade-${qIdx}`}
+                  lines={
+                    correct
+                      ? ["The rule works!", "Take that, fruit."]
+                      : verdict === null
+                        ? [`${name} flipped through its rules.`, "Not one mentions this fruit.", "Total blank."]
+                        : [
+                            `Your rule says ${item.fruit.color} → ${KIND_EMOJI[verdict]} ${verdict}.`,
+                            `But this is a ${item.fruit.kind}!`,
+                            "The rule just broke.",
+                          ]
+                  }
+                >
+                  {correct ? (
+                    <button className="bigbtn lsn-go" onClick={() => { setQIdx(qIdx + 1); setRevealed(false); }}>
+                      Next fruit ▶
+                    </button>
+                  ) : broken < 2 ? (
+                    <button className="bigbtn lsn-go" onClick={() => setStage("build")}>
+                      ✍️ Patch it: add one more rule
+                    </button>
+                  ) : (
+                    <button className="bigbtn lsn-go" onClick={() => setStage("pivot")}>
+                      😵 …this isn’t working
+                    </button>
+                  )}
+                </Dialogue>
               </>
             )}
           </section>
@@ -340,17 +386,20 @@ export function ClassOne() {
       {stage === "pivot" && (
         <section className="lsn-card">
           <h1>Rules keep breaking.</h1>
-          <p>
-            Fix one fruit, another breaks. You could write rules your whole life —
-            green bananas, yellow apples, spotty ones — and some fruit would still fool them.
-          </p>
-          <p>
-            So stop <b>telling</b> {name} the answer. <b>Show</b> it a pile of real fruits
-            instead, and let it work out the pattern all by itself.
-          </p>
-          <button className="bigbtn lsn-go" onClick={() => setStage("teach")}>
-            🍎🍌 Show {name} real fruits
-          </button>
+          <Dialogue
+            key="pivot"
+            lines={[
+              "Fix one fruit, another breaks.",
+              "Green bananas, yellow apples, spotty ones…",
+              "Some fruit will ALWAYS fool your rules.",
+              `So stop TELLING ${name} the answer.`,
+              "SHOW it real fruits — let it find the pattern!",
+            ]}
+          >
+            <button className="bigbtn lsn-go" onClick={() => setStage("teach")}>
+              🍎🍌 Show {name} real fruits
+            </button>
+          </Dialogue>
         </section>
       )}
 
@@ -358,8 +407,8 @@ export function ClassOne() {
         <section className="lsn-card">
           {studied.length < TEACH_DECK.length ? (
             <>
+              <NowStrip>Stick the right name on all {TEACH_DECK.length} fruits</NowStrip>
               <h1>Study time.</h1>
-              <p>Hold up each fruit and tell {name} what it is. Do all {TEACH_DECK.length}!</p>
               <div className="rs1-count">shown {studied.length} of {TEACH_DECK.length}</div>
               <div className="rs1-fruitbox"><FruitSticker fruit={TEACH_DECK[studied.length]} /></div>
               <div className="rs1-chips">
@@ -370,8 +419,15 @@ export function ClassOne() {
           ) : (
             <>
               <h1>Study wall full!</h1>
-              <p>{name} stared hard at every single one. Time to find out what it figured out.</p>
-              <button className="bigbtn lsn-go" onClick={() => setStage("exam")}>🔔 Ring the exam bell</button>
+              <Dialogue
+                key="teach-done"
+                lines={[
+                  `${name} stared hard at every single one.`,
+                  "Time to find out what it figured out.",
+                ]}
+              >
+                <button className="bigbtn lsn-go" onClick={() => setStage("exam")}>🔔 Ring the exam bell</button>
+              </Dialogue>
             </>
           )}
           {studied.length > 0 && (
@@ -395,7 +451,7 @@ export function ClassOne() {
         const r = results[eIdx];
         return (
           <section className="lsn-card">
-            <div className="rs1-exambanner">📝 EXAM — teacher watches, {name} answers alone. No helping!</div>
+            <NowStrip>Flip the card — {name} answers alone</NowStrip>
             <div className="rs1-count">
               fruit {eIdx + 1} of {EXAM_DECK.length} · score so far: {score} ✓
             </div>
@@ -404,9 +460,7 @@ export function ClassOne() {
               <button className="bigbtn lsn-go" onClick={flipExam}>Flip the card ▶</button>
             ) : (
               <>
-                <div className={`rs1-stamp ${r.correct ? "good" : "bad"}`}>
-                  {r.correct ? "✓ CORRECT" : `✗ WRONG — it’s a ${fruit.kind} ${KIND_EMOJI[fruit.kind]}`}
-                </div>
+                <RobotAnswer name={name} guess={r.guess} correct={r.correct} />
                 <div className="rs1-match">
                   <span>“It looks most like this study fruit:”</span>
                   <span className="rs1-mini">
@@ -461,9 +515,9 @@ export function ClassOne() {
                 every step.”
               </blockquote>
               <p>
-                That’s exactly what {name} just did. Working a pattern out for yourself is
-                called <b>learning</b> — and a program that can learn is called <b>AI</b>.
-                Say the sentence above out loud. You earned it, teacher.
+                That’s what {name} just did: working a pattern out for yourself is
+                called <b>learning</b>, and a program that can learn is called <b>AI</b>.
+                Say the sentence above out loud — you earned it, teacher.
               </p>
               <div className="rs1-words">🔓 new words: <b>AI</b> · <b>learning</b></div>
               <div className="rs1-next">
@@ -475,9 +529,9 @@ export function ClassOne() {
           ) : (
             <>
               <p>
-                {name} answered <b>exactly</b> the way you taught it. If some study fruits got
-                the wrong name, {name} learned the wrong pattern. Happens to the best teachers —
-                grab the fruits and teach it again.
+                {name} answered <b>exactly</b> the way you taught it — a study fruit with the
+                wrong name teaches the wrong pattern. Happens to the best teachers: grab the
+                fruits and teach it again.
               </p>
               <button className="bigbtn lsn-go" onClick={reTeach}>↺ Teach {name} again</button>
             </>

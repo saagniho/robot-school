@@ -13,6 +13,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { StudentBot } from "@/components/student-bot";
 import { FruitSticker } from "@/components/fruit-sticker";
+import { Dialogue } from "@/components/dialogue";
+import { MissionCard } from "@/components/mission-card";
+import { NowStrip } from "@/components/now-strip";
+import { RobotAnswer } from "@/components/robot-answer";
 import { loadSchool, markDone } from "@/lib/progress";
 import { classify, KIND_EMOJI, type FruitKind, type Labeled } from "@/lib/fruit";
 import { C2_FINAL_EXAM, C2_GREMLIN_IDS, C2_MINI_EXAM, C2_ROUND1, C2_ROUND2 } from "@/lib/fruit2";
@@ -63,9 +67,10 @@ export function ClassTwo() {
   const [results, setResults] = useState<{ guess: FruitKind; matchIndex: number; correct: boolean }[]>([]);
   const [eRevealed, setERevealed] = useState(false);
 
-  // gremlin round
+  // gremlin round (gremlinVisits only picks intro copy — no game logic on it)
   const [gremlinApplied, setGremlinApplied] = useState(false);
   const [kidFlipped, setKidFlipped] = useState(false);
+  const [gremlinVisits, setGremlinVisits] = useState(0);
 
   useEffect(() => {
     const s = loadSchool();
@@ -101,6 +106,7 @@ export function ClassTwo() {
       setWall(wall.map((l) => (C2_GREMLIN_IDS.includes(l.fruit.id) ? { ...l, label: flip(l.label) } : l)));
       setGremlinApplied(true);
     }
+    setGremlinVisits(gremlinVisits + 1);
     setStage("gremlin");
   }
 
@@ -164,10 +170,7 @@ export function ClassTwo() {
     const last = eIdx + 1 >= examDeck.length;
     return (
       <section className="lsn-card">
-        <div className="rs2-exambanner">
-          📝 {stage === "final" ? "THE BIG EXAM" : stage === "exam2" ? "SAME EXAM, ROUND 2" : "MINI EXAM"} — teacher
-          watches, {name} answers alone. No helping!
-        </div>
+        <NowStrip>Flip the card — {name} answers alone</NowStrip>
         <div className="rs2-count">
           fruit {eIdx + 1} of {examDeck.length} · score so far: {score} ✓
         </div>
@@ -176,9 +179,7 @@ export function ClassTwo() {
           <button className="bigbtn lsn-go" onClick={flipCard}>Flip the card ▶</button>
         ) : (
           <>
-            <div className={`rs2-stamp ${r.correct ? "good" : "bad"}`}>
-              {r.correct ? "✓ CORRECT" : `✗ WRONG — it’s a ${fruit.kind} ${KIND_EMOJI[fruit.kind]}`}
-            </div>
+            <RobotAnswer name={name} guess={r.guess} correct={r.correct} />
             <div className="rs2-match">
               <span>“It looks most like this study fruit:”</span>
               <span className="rs2-mini">
@@ -226,49 +227,68 @@ export function ClassTwo() {
       {stage === "gate" && (
         <section className="lsn-card">
           <h1>You need Class 1 first!</h1>
-          <p>
-            This robot has no eyes yet — it can&rsquo;t even see the fruits, let alone
-            study them. Teach it Class 1 and come back.
-          </p>
-          <Link href={`/class/${CLASS1_SLUG}/`} className="bigbtn lsn-go">👀 Go to Class 1</Link>
+          <Dialogue
+            key="gate"
+            lines={[
+              "Whoa — this robot has no eyes yet!",
+              "It can’t even see the fruits.",
+              "Teach it Class 1 and come back.",
+            ]}
+          >
+            <Link href={`/class/${CLASS1_SLUG}/`} className="bigbtn lsn-go">👀 Go to Class 1</Link>
+          </Dialogue>
         </section>
       )}
 
       {stage === "intro" && (
-        <section className="lsn-card">
-          <h1>Welcome back, teacher.</h1>
-          <p>
-            {name} can spot fruit now. But how many examples does a student need?
-            Three? Thirty? What if some are <b>wrong</b>?
-          </p>
-          <p>Today: three experiments.</p>
-          <button className="bigbtn lsn-go" onClick={() => setStage("teach1")}>
-            🎒 Experiment 1: open the fruit bag
-          </button>
-        </section>
+        <MissionCard
+          mission="Find out how many examples a student needs."
+          steps={[
+            { icon: "🎒", label: "tiny bag" },
+            { icon: "🚚", label: "big delivery" },
+            { icon: "😈", label: "sticker gremlin" },
+            { icon: "📝", label: "big exam" },
+          ]}
+          onStart={() => setStage("teach1")}
+        />
       )}
 
       {stage === "teach1" && (
         <section className="lsn-card">
           {wall.length < C2_ROUND1.length ? (
             <>
+              <NowStrip>Stick the right sticker on 3 fruits</NowStrip>
               <h1>Slim pickings.</h1>
-              <p>Your fruit bag is nearly empty today — just 3 fruits. All bananas.</p>
-              <div className="rs2-count">shown {wall.length} of {C2_ROUND1.length}</div>
-              <div className="rs2-fruitbox"><FruitSticker fruit={C2_ROUND1[wall.length]} /></div>
-              <div className="rs2-chips">
-                <button className="rs2-chip" onClick={() => teachLabel("apple")}>🍎 It’s an apple</button>
-                <button className="rs2-chip" onClick={() => teachLabel("banana")}>🍌 It’s a banana</button>
-              </div>
+              <Dialogue
+                key="teach1-go"
+                lines={[
+                  "Bad news, teacher.",
+                  "Your fruit bag is nearly empty today.",
+                  "Just 3 fruits — all bananas!",
+                ]}
+              >
+                <div className="rs2-count">shown {wall.length} of {C2_ROUND1.length}</div>
+                <div className="rs2-fruitbox"><FruitSticker fruit={C2_ROUND1[wall.length]} /></div>
+                <div className="rs2-chips">
+                  <button className="rs2-chip" onClick={() => teachLabel("apple")}>🍎 It’s an apple</button>
+                  <button className="rs2-chip" onClick={() => teachLabel("banana")}>🍌 It’s a banana</button>
+                </div>
+              </Dialogue>
             </>
           ) : (
             <>
               <h1>That’s the whole bag.</h1>
-              <p>
-                Three fruits. {name} studied hard, but that is one tiny study wall.
-                Will it be enough? Only one way to find out.
-              </p>
-              <button className="bigbtn lsn-go" onClick={() => startExam("exam1")}>🔔 Ring the exam bell</button>
+              <Dialogue
+                key="teach1-done"
+                lines={[
+                  "Three fruits. One tiny study wall.",
+                  `${name} studied hard anyway.`,
+                  "Will it be enough?",
+                  "Only one way to find out!",
+                ]}
+              >
+                <button className="bigbtn lsn-go" onClick={() => startExam("exam1")}>🔔 Ring the exam bell</button>
+              </Dialogue>
             </>
           )}
           {shelf}
@@ -278,21 +298,30 @@ export function ClassTwo() {
       {stage === "bridge1" && (
         <section className="lsn-card">
           <h1>{score} out of {C2_MINI_EXAM.length}.</h1>
-          {wall.every((l) => l.label === "banana") ? (
-            <p>
-              See it? {name} has only ever seen bananas. To a banana-only student,
-              EVERYTHING is a banana.
-            </p>
-          ) : (
-            <p>
-              See it? {name} believes every sticker you stick — even the silly ones.
-              With only 3 fruits on the wall, it copied your stickers on EVERYTHING.
-            </p>
-          )}
-          <p>{name} isn&rsquo;t broken — its study wall is just too small. It needs more to look at.</p>
-          <button className="bigbtn lsn-go" onClick={() => setStage("teach2")}>
-            🚚 Experiment 2: answer the door
-          </button>
+          <Dialogue
+            key="bridge1"
+            lines={
+              wall.every((l) => l.label === "banana")
+                ? [
+                    "See it?",
+                    `${name} has only ever seen bananas.`,
+                    "To a banana-only student, EVERYTHING is a banana.",
+                    `${name} isn’t broken — its wall is too small.`,
+                    "It needs more to look at.",
+                  ]
+                : [
+                    "See it?",
+                    `${name} believes every sticker — even silly ones.`,
+                    "Just 3 fruits, so your stickers went on EVERYTHING.",
+                    `${name} isn’t broken — its wall is too small.`,
+                    "It needs more to look at.",
+                  ]
+            }
+          >
+            <button className="bigbtn lsn-go" onClick={() => setStage("teach2")}>
+              🚚 Experiment 2: answer the door
+            </button>
+          </Dialogue>
         </section>
       )}
 
@@ -300,27 +329,41 @@ export function ClassTwo() {
         <section className="lsn-card">
           {wall.length < WALL_SIZE ? (
             <>
+              <NowStrip>Stick stickers on the 7 new fruits</NowStrip>
               <h1>Delivery!</h1>
-              <p>The delivery truck just arrived — 7 more fruits, all kinds!</p>
-              <div className="rs2-count">
-                shown {wall.length - C2_ROUND1.length} of {C2_ROUND2.length}
-              </div>
-              <div className="rs2-fruitbox">
-                <FruitSticker fruit={C2_ROUND2[wall.length - C2_ROUND1.length]} />
-              </div>
-              <div className="rs2-chips">
-                <button className="rs2-chip" onClick={() => teachLabel("apple")}>🍎 It’s an apple</button>
-                <button className="rs2-chip" onClick={() => teachLabel("banana")}>🍌 It’s a banana</button>
-              </div>
+              <Dialogue
+                key="teach2-go"
+                lines={[
+                  "The delivery truck just arrived!",
+                  "7 more fruits — all kinds!",
+                ]}
+              >
+                <div className="rs2-count">
+                  shown {wall.length - C2_ROUND1.length} of {C2_ROUND2.length}
+                </div>
+                <div className="rs2-fruitbox">
+                  <FruitSticker fruit={C2_ROUND2[wall.length - C2_ROUND1.length]} />
+                </div>
+                <div className="rs2-chips">
+                  <button className="rs2-chip" onClick={() => teachLabel("apple")}>🍎 It’s an apple</button>
+                  <button className="rs2-chip" onClick={() => teachLabel("banana")}>🍌 It’s a banana</button>
+                </div>
+              </Dialogue>
             </>
           ) : (
             <>
               <h1>Study wall packed!</h1>
-              <p>
-                Ten fruits now — big ones, small ones, every color. Time for the
-                sneaky part: the <b>exact same exam</b>. Same 6 fruits. Watch.
-              </p>
-              <button className="bigbtn lsn-go" onClick={() => startExam("exam2")}>🔔 Ring the bell again</button>
+              <Dialogue
+                key="teach2-done"
+                lines={[
+                  "Ten fruits — big, small, every color.",
+                  "Now the sneaky part.",
+                  "The EXACT same exam. Same 6 fruits.",
+                  "Watch closely!",
+                ]}
+              >
+                <button className="bigbtn lsn-go" onClick={() => startExam("exam2")}>🔔 Ring the bell again</button>
+              </Dialogue>
             </>
           )}
           {shelf}
@@ -330,55 +373,71 @@ export function ClassTwo() {
       {stage === "bridge2" && (
         <section className="lsn-card">
           <h1>{score} out of {C2_MINI_EXAM.length}!</h1>
-          {score === C2_MINI_EXAM.length ? (
-            <>
-              <p>
-                Same exam. Same six fruits. Same robot. The only thing that changed
-                was the study wall — and the score jumped.
-              </p>
-              <p><b>THAT is the difference examples make.</b></p>
-            </>
-          ) : (
-            <p>
-              Same exam, bigger wall — but {name} still tripped. It answers with
-              whatever the stickers on its wall say… worth remembering, teacher.
-            </p>
-          )}
-          <p>Okay, teacher. Lights off, school&rsquo;s closed. See you tomorrow for experiment 3…</p>
-          <button className="bigbtn lsn-go" onClick={enterGremlin}>🌙 Good night, {name}</button>
+          <Dialogue
+            key="bridge2"
+            lines={
+              score === C2_MINI_EXAM.length
+                ? [
+                    "Same exam. Same six fruits. Same robot.",
+                    "The only change: the study wall.",
+                    "And the score jumped!",
+                    "THAT is the difference examples make.",
+                    "Okay — lights off, school’s closed. See you tomorrow…",
+                  ]
+                : [
+                    `Same exam, bigger wall — but ${name} still tripped.`,
+                    "It answers with whatever its stickers say.",
+                    "Worth remembering, teacher.",
+                    "Okay — lights off, school’s closed. See you tomorrow…",
+                  ]
+            }
+          >
+            <button className="bigbtn lsn-go" onClick={enterGremlin}>🌙 Good night, {name}</button>
+          </Dialogue>
         </section>
       )}
 
       {stage === "gremlin" && (
         <section className="lsn-card">
+          <NowStrip>Find and fix the 3 fishy stickers</NowStrip>
           <h1>Uh oh.</h1>
-          <p>
-            Overnight, a <b>sticker gremlin</b> snuck in and flipped THREE stickers
-            on the study wall. Now some fruits wear the wrong name — and {name} believes
-            every sticker it sees.
-          </p>
-          <p className="lsn-hint">
-            Tap a fruit to flip its sticker. Fix all three fishy ones, then ring the bell.
-          </p>
-          <div className="rs2-shelf">
-            <div className="rs2-shelf-label">{name}&rsquo;s study wall — tap to flip</div>
-            <div className="rs2-shelf-row">
-              {wall.map((l) => (
-                <button
-                  key={l.fruit.id}
-                  className="rs2-flip"
-                  onClick={() => toggleSticker(l.fruit.id)}
-                  aria-label={`a ${l.fruit.color} ${l.fruit.kind} wearing a ${l.label} sticker — tap to flip`}
-                >
-                  <FruitSticker fruit={l.fruit} px={40} />
-                  <em>{KIND_EMOJI[l.label]}</em>
-                </button>
-              ))}
+          <Dialogue
+            key={`gremlin-${gremlinVisits}`}
+            lines={
+              gremlinVisits > 1
+                ? [
+                    "Some stickers are STILL fishy…",
+                    "Trust your own eyes, teacher!",
+                  ]
+                : [
+                    "A sticker gremlin snuck in overnight!",
+                    "It flipped THREE stickers on the study wall.",
+                    `And ${name} believes every sticker it sees.`,
+                    "Tap a fruit to flip its sticker.",
+                    "Fix all three fishy ones, then ring the bell.",
+                  ]
+            }
+          >
+            <div className="rs2-shelf">
+              <div className="rs2-shelf-label">{name}&rsquo;s study wall — tap to flip</div>
+              <div className="rs2-shelf-row">
+                {wall.map((l) => (
+                  <button
+                    key={l.fruit.id}
+                    className="rs2-flip"
+                    onClick={() => toggleSticker(l.fruit.id)}
+                    aria-label={`a ${l.fruit.color} ${l.fruit.kind} wearing a ${l.label} sticker — tap to flip`}
+                  >
+                    <FruitSticker fruit={l.fruit} px={40} />
+                    <em>{KIND_EMOJI[l.label]}</em>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-          {kidFlipped && (
-            <button className="bigbtn lsn-go" onClick={() => startExam("final")}>🔔 Re-run the exam</button>
-          )}
+            {kidFlipped && (
+              <button className="bigbtn lsn-go" onClick={() => startExam("final")}>🔔 Re-run the exam</button>
+            )}
+          </Dialogue>
         </section>
       )}
 
@@ -387,11 +446,24 @@ export function ClassTwo() {
       {stage === "retry" && (
         <section className="lsn-card">
           <h1>{score}/{C2_FINAL_EXAM.length}. So close.</h1>
-          <p>
-            Some stickers are still fishy — look for fruits whose sticker doesn&rsquo;t
-            match what YOU know they are. {name} can only be as right as its wall.
-          </p>
-          <button className="bigbtn lsn-go" onClick={() => setStage("gremlin")}>🔍 Back to the wall</button>
+          <Dialogue
+            key="retry"
+            lines={[
+              "Some stickers are still fishy.",
+              "Find fruits whose sticker doesn’t match what YOU know.",
+              `${name} can only be as right as its wall.`,
+            ]}
+          >
+            <button
+              className="bigbtn lsn-go"
+              onClick={() => {
+                setGremlinVisits(gremlinVisits + 1);
+                setStage("gremlin");
+              }}
+            >
+              🔍 Back to the wall
+            </button>
+          </Dialogue>
         </section>
       )}
 
@@ -422,11 +494,9 @@ export function ClassTwo() {
             = smarter. Wrong examples = confused robot.”
           </blockquote>
           <p>
-            Those study fruits have a proper name: they&rsquo;re <b>examples</b>. And
-            showing a robot examples until it catches the pattern is called{" "}
-            <b>training</b>. You trained {name} three times today — with a nearly-empty
-            bag, with a full truck, and with a gremlin in the mix. It only got smart
-            when the examples were many AND right.
+            Those study fruits are <b>examples</b> — and showing a robot examples until
+            it catches the pattern is called <b>training</b>. You trained {name} three
+            times today, and it only got smart when the examples were many AND right.
           </p>
           <div className="rs2-words">🔓 new words: <b>training</b> · <b>examples</b></div>
           <div className="rs2-next">

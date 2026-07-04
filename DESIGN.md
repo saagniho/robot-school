@@ -66,3 +66,9 @@ micro-action. No autoplaying sound.
 - **Type:** Baloo 2 (display), Nunito (body).
 - **Shapes:** big radii (20px+), thick 2px borders, hard offset shadows (sticker
   look) — not glassmorphism.
+
+## 10. Kids don't read paragraphs
+Lesson copy ships as dialogue lines of ten words or fewer, revealed one tap at a
+time; every interactive screen pins a one-line NOW strip naming the immediate
+task; exam reveals show the robot's answer BIG before the verdict stamps it.
+Paragraphs are allowed only on report cards.
