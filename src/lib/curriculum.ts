@@ -56,7 +56,7 @@ export const CLASSES: SchoolClass[] = [
     vocab: ["training", "examples"],
     part: { id: "memory", label: "Memory chip", icon: "💾" },
     term: 1,
-    live: false,
+    live: true,
   },
   {
     num: 3,

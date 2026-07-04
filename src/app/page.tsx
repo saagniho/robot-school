@@ -3,6 +3,9 @@ import { CLASSES, GRADUATION, TERMS, type SchoolClass } from "@/lib/curriculum";
 import { HeroBot } from "@/components/hero-bot";
 import { ClassStatus } from "@/components/class-status";
 
+/** The lowest class not yet built — its card wears the "being built" badge. */
+const NEXT_BUILD = Math.min(...CLASSES.filter((c) => !c.live).map((c) => c.num));
+
 function CardBody({ c }: { c: SchoolClass }) {
   return (
     <>
@@ -20,7 +23,7 @@ function CardBody({ c }: { c: SchoolClass }) {
       {c.live ? (
         <ClassStatus slug={c.slug} />
       ) : (
-        <div className="classstatus">{c.num === 2 ? "🔨 being built next" : "🔒 opens later"}</div>
+        <div className="classstatus">{c.num === NEXT_BUILD ? "🔨 being built next" : "🔒 opens later"}</div>
       )}
     </>
   );
