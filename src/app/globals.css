@@ -509,6 +509,86 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
   100% { transform: translateY(560px) rotate(560deg); opacity: 0; }
 }
 
+/* ── class 3: spotters & makers ──────────────────────────── */
+.rs3-fruitbox {
+  display: grid; place-items: center; min-height: 150px;
+  background: var(--panel-2); border: 2px solid var(--line);
+  border-radius: 16px; margin: 0 0 16px;
+}
+.rs3-fruitbig { min-height: 180px; }
+
+.rs3-count {
+  display: inline-block; font-weight: 800; font-size: 13px; color: var(--bg);
+  background: var(--blue); border-radius: 20px; padding: 5px 13px; margin-bottom: 12px;
+}
+
+.rs3-aicard {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--panel-2); border: 2px solid var(--line-2);
+  border-radius: 16px; padding: 16px 18px; margin-bottom: 16px;
+}
+.rs3-aiicon { font-size: 38px; line-height: 1; }
+.rs3-ainame { font-family: var(--display); font-weight: 700; font-size: 18px; margin-bottom: 2px; }
+.rs3-ablurb { color: var(--mute); font-size: 14px; }
+
+.rs3-sortbtns { display: flex; gap: 10px; flex-wrap: wrap; }
+.rs3-sortbtn { min-height: 56px; font-size: 19px; }
+.rs3-spot { background: var(--blue); }
+.rs3-make { background: var(--orange); }
+
+.rs3-why { color: var(--mute) !important; }
+
+.rs3-btnrow { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.rs3-again { background: var(--panel-2); color: var(--ink); border: 2px solid var(--line-2); }
+.rs3-again:hover { border-color: var(--yellow); }
+.rs3-caption { font-weight: 700; color: var(--ink) !important; }
+
+.rs3-stamp {
+  display: inline-block; font-family: var(--display); font-weight: 700; font-size: 19px;
+  border-radius: 12px; padding: 8px 16px; margin-bottom: 10px;
+  transform: rotate(-2deg); border: 2.5px solid;
+}
+.rs3-stamp.good { color: var(--green); border-color: var(--green); background: rgba(122, 229, 130, 0.08); }
+.rs3-stamp.bad { color: var(--pink); border-color: var(--pink); background: rgba(247, 37, 133, 0.08); }
+
+.rs3-report { overflow: hidden; }
+.rs3-report-head { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 1.5px; color: var(--blue); margin-bottom: 6px; }
+.rs3-report-names { font-weight: 700; font-size: 14px; color: var(--mute); margin-bottom: 14px; }
+.rs3-report-names b { color: var(--ink); }
+.rs3-report-score {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  font-family: var(--display); font-weight: 700; font-size: 54px; color: var(--yellow);
+  margin-bottom: 16px;
+}
+.rs3-part {
+  display: flex; gap: 12px; align-items: center;
+  background: var(--panel-2); border: 2px solid var(--green);
+  border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;
+  color: var(--mute); line-height: 1.5; font-size: 14.5px;
+}
+.rs3-part b { color: var(--green); }
+.rs3-part-icon { font-size: 34px; }
+.rs3-aha {
+  margin: 0 0 14px; padding: 14px 18px;
+  font-family: var(--display); font-weight: 700; font-size: 19px; line-height: 1.45;
+  color: var(--ink); background: var(--panel-2);
+  border-left: 5px solid var(--yellow); border-radius: 6px 14px 14px 6px;
+}
+.rs3-words { font-weight: 800; font-size: 14.5px; color: var(--mute); margin-bottom: 14px; }
+.rs3-words b { color: var(--yellow); }
+.rs3-next { color: var(--mute); font-size: 14px; line-height: 1.55; background: var(--panel-2); border: 2px dashed var(--line-2); border-radius: 14px; padding: 12px 16px; margin-bottom: 20px; }
+.rs3-next b { color: var(--ink); }
+
+.rs3-confetti { position: absolute; inset: 0; pointer-events: none; }
+.rs3-confetti span {
+  position: absolute; top: -14px; width: 10px; height: 15px; border-radius: 3px;
+  animation: rs3-drop 1.9s ease-in forwards;
+}
+@keyframes rs3-drop {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(560px) rotate(560deg); opacity: 0; }
+}
+
 /* ── small screens ───────────────────────────────────────── */
 @media (max-width: 760px) {
   .hero { grid-template-columns: 1fr; padding-top: 24px; }

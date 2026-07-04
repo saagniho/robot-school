@@ -68,7 +68,7 @@ export const CLASSES: SchoolClass[] = [
     vocab: ["generative"],
     part: { id: "bulb", label: "Imagination bulb", icon: "💡" },
     term: 1,
-    live: false,
+    live: true,
   },
   {
     num: 4,
