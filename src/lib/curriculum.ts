@@ -104,7 +104,7 @@ export const CLASSES: SchoolClass[] = [
     vocab: ["attention", "context"],
     part: { id: "antenna", label: "Attention antenna", icon: "📡" },
     term: 2,
-    live: false,
+    live: true,
   },
   {
     num: 7,
