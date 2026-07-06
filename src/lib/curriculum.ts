@@ -92,7 +92,7 @@ export const CLASSES: SchoolClass[] = [
     vocab: ["predict"],
     part: { id: "voice", label: "Voice box", icon: "🔊" },
     term: 2,
-    live: false,
+    live: true,
   },
   {
     num: 6,
