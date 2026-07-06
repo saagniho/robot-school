@@ -26,6 +26,7 @@ type Stage =
   | "boot"
   | "gate"
   | "intro"
+  | "recall"
   | "teach1"
   | "exam1"
   | "bridge1"
@@ -129,6 +130,7 @@ export function ClassTwo() {
       case "boot": return "beep…";
       case "gate": return "😴 zzz";
       case "intro": return "👀 !";
+      case "recall": return "👀 …💾?";
       case "teach1":
       case "teach2": {
         const full = stage === "teach1" ? wall.length >= C2_ROUND1.length : wall.length >= WALL_SIZE;
@@ -249,8 +251,28 @@ export function ClassTwo() {
             { icon: "😈", label: "sticker gremlin" },
             { icon: "📝", label: "big exam" },
           ]}
-          onStart={() => setStage("teach1")}
+          onStart={() => setStage("recall")}
         />
+      )}
+
+      {stage === "recall" && (
+        <section className="lsn-card">
+          <h1>Quick recap, teacher.</h1>
+          <Dialogue
+            key="recall"
+            lines={[
+              "Last class, you taught " + name + " to spot fruit! 🍎🍌",
+              "But look — no memory chip yet.",
+              "It can’t KEEP what it learns… until today.",
+              "Its study wall IS its memory — let’s fill it.",
+              "Do that well and it earns the chip! 💾",
+            ]}
+          >
+            <button className="bigbtn lsn-go" onClick={() => setStage("teach1")}>
+              🎒 Start with the fruit bag
+            </button>
+          </Dialogue>
+        </section>
       )}
 
       {stage === "teach1" && (
@@ -262,8 +284,8 @@ export function ClassTwo() {
               <Dialogue
                 key="teach1-go"
                 lines={[
-                  "Bad news, teacher.",
-                  "Your fruit bag is nearly empty today.",
+                  "First examples ever — into its fresh memory!",
+                  "But the fruit bag is nearly empty today.",
                   "Just 3 fruits — all bananas!",
                 ]}
               >
