@@ -80,7 +80,7 @@ export const CLASSES: SchoolClass[] = [
     vocab: ["token"],
     part: { id: "ears", label: "Ears", icon: "👂" },
     term: 2,
-    live: false,
+    live: true,
   },
   {
     num: 5,

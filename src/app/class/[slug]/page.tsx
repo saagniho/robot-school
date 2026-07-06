@@ -4,6 +4,7 @@ import { CLASSES, getClass } from "@/lib/curriculum";
 import { ClassOne } from "@/components/classes/class-one";
 import { ClassTwo } from "@/components/classes/class-two";
 import { ClassThree } from "@/components/classes/class-three";
+import { ClassFour } from "@/components/classes/class-four";
 
 export const dynamicParams = false;
 
@@ -24,6 +25,7 @@ const LESSONS: Record<string, React.ComponentType> = {
   "a-student-who-learns": ClassOne,
   "good-examples-great-student": ClassTwo,
   "spotters-and-makers": ClassThree,
+  "robot-words": ClassFour,
 };
 
 export default async function ClassPage({ params }: { params: Promise<{ slug: string }> }) {
