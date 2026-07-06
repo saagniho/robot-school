@@ -690,53 +690,64 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 .rs5-seenpill { display: inline-block; font-weight: 700; font-size: 12.5px; color: var(--mute); margin: 2px 0 10px; }
 
 /* ── class 6: pay attention ───────────────────────────────── */
-.rs6-sentence {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 7px;
-  font-family: var(--display); font-size: 18px; line-height: 1.7; color: var(--ink);
-  background: var(--panel-2); border: 2px dashed var(--line-2);
-  border-radius: 14px; padding: 14px 16px; margin-bottom: 14px;
-}
-.rs6-word { color: var(--ink); }
-.rs6-word.cand { color: var(--blue); font-weight: 700; }
-.rs6-word.spotlight { color: var(--yellow); }
-.rs6-blank {
-  display: inline-block; min-width: 46px; text-align: center;
-  color: var(--mute); border-bottom: 3px solid var(--orange); padding: 0 4px;
-}
-.rs6-chip {
-  font-family: var(--body); font-weight: 700; font-size: 16px; color: var(--blue);
-  background: var(--panel); border: 2px solid var(--blue); border-radius: 10px;
-  padding: 4px 10px; cursor: pointer; transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
-}
-.rs6-chip:hover:not(:disabled) { transform: translate(-1px, -2px); box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35); }
-.rs6-chip:active:not(:disabled) { transform: translate(1px, 1px); box-shadow: none; }
-.rs6-chip:disabled { cursor: default; opacity: 0.7; }
-.rs6-chip.spotlight {
-  color: var(--bg); background: var(--yellow); border-color: var(--yellow);
-  box-shadow: 0 0 0 4px rgba(255, 206, 49, 0.28);
-  animation: rs6-glow 1.1s ease-in-out infinite;
-}
-@keyframes rs6-glow {
-  50% { box-shadow: 0 0 0 7px rgba(255, 206, 49, 0.18); }
-}
-
 .rs6-count {
   display: inline-block; font-weight: 800; font-size: 13px; color: var(--bg);
   background: var(--blue); border-radius: 20px; padding: 5px 13px; margin-bottom: 12px;
 }
 
-.rs6-say {
-  display: inline-block; font-weight: 700; font-size: 15px; color: var(--mute);
-  background: var(--panel-2); border: 2px solid var(--line); border-radius: 12px 12px 12px 3px;
-  padding: 8px 14px; margin-bottom: 10px;
+.rs6-word-big {
+  font-family: var(--display); font-weight: 700; font-size: 44px; color: var(--yellow);
+  text-align: center; margin-bottom: 10px; letter-spacing: 0.5px;
 }
-.rs6-say b { color: var(--ink); }
+.rs6-senses { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.rs6-sense {
+  flex: 1 1 140px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: var(--panel-2); border: 2px solid var(--line); border-radius: 14px;
+  padding: 14px 10px; font-weight: 700; font-size: 14px; color: var(--ink); text-align: center;
+}
+.rs6-sense-emoji { font-size: 30px; }
 
-.rs6-nudge { color: var(--orange); font-weight: 700; font-size: 14px; margin: 0 0 10px; }
-.rs6-yes { color: var(--green); font-weight: 700; font-size: 14px; margin: 0 0 10px; }
+.rs6-minis { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.rs6-mini {
+  font-family: var(--display); font-size: 16px; color: var(--ink);
+  background: var(--panel-2); border: 2px dashed var(--line-2);
+  border-radius: 12px; padding: 10px 14px;
+}
 
-.rs6-hint { color: var(--mute); font-weight: 700; font-size: 14.5px; margin: 0 0 10px; }
-.rs6-hint b { color: var(--ink); }
+.rs6-line {
+  font-family: var(--display); font-size: 19px; line-height: 1.6; color: var(--ink);
+  background: var(--panel-2); border: 2px dashed var(--line-2);
+  border-radius: 14px; padding: 14px 18px; margin-bottom: 14px;
+}
+.rs6-hi { color: var(--yellow); }
+
+.rs6-teachcards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.rs6-teachcard {
+  background: var(--panel-2); border: 2px solid var(--line-2); border-radius: 14px; padding: 12px 14px;
+}
+.rs6-teachcard.done { border-color: var(--green); }
+.rs6-teachcard-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.rs6-teachcard-emoji { font-size: 22px; }
+.rs6-teachcard-word {
+  font-family: var(--display); font-weight: 700; font-size: 17px; color: var(--ink); text-transform: uppercase;
+}
+.rs6-teachcard-label { color: var(--mute); font-weight: 700; font-size: 13.5px; }
+.rs6-teachcard-sentence {
+  font-size: 14.5px; color: var(--mute); font-style: italic; margin-bottom: 8px; line-height: 1.4;
+}
+.rs6-clues { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.rs6-clues-label { font-weight: 800; font-size: 12.5px; color: var(--green); text-transform: uppercase; letter-spacing: 0.4px; }
+.rs6-clue-chip {
+  font-weight: 700; font-size: 13px; color: var(--bg);
+  background: var(--blue); border-radius: 8px; padding: 3px 9px;
+  animation: rs6-liton 0.3s ease-out;
+}
+@keyframes rs6-liton {
+  0% { transform: scale(1.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.rs6-why { font-weight: 700; font-size: 13.5px; color: var(--mute); margin: -2px 0 8px; }
 
 /* ── small screens ───────────────────────────────────────── */
 @media (max-width: 760px) {
