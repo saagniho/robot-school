@@ -7,6 +7,7 @@ import { ClassThree } from "@/components/classes/class-three";
 import { ClassFour } from "@/components/classes/class-four";
 import { ClassFive } from "@/components/classes/class-five";
 import { ClassSix } from "@/components/classes/class-six";
+import { ClassSeven } from "@/components/classes/class-seven";
 
 export const dynamicParams = false;
 
@@ -30,6 +31,7 @@ const LESSONS: Record<string, React.ComponentType> = {
   "robot-words": ClassFour,
   "the-guessing-game": ClassFive,
   "pay-attention": ClassSix,
+  "the-big-brain": ClassSeven,
 };
 
 export default async function ClassPage({ params }: { params: Promise<{ slug: string }> }) {

@@ -116,7 +116,7 @@ export const CLASSES: SchoolClass[] = [
     vocab: ["LLM"],
     part: { id: "brain", label: "The Big Brain", icon: "🧠" },
     term: 2,
-    live: false,
+    live: true,
   },
   {
     num: 8,

@@ -749,6 +749,107 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 
 .rs6-why { font-weight: 700; font-size: 13.5px; color: var(--mute); margin: -2px 0 8px; }
 
+/* ── class 7: the big brain ───────────────────────────────── */
+.rs7-count {
+  display: inline-block; font-weight: 800; font-size: 13px; color: var(--bg);
+  background: var(--blue); border-radius: 20px; padding: 5px 13px; margin-bottom: 12px;
+}
+
+/* assemble: three engine part-cards + the brain box */
+.rs7-engines { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.rs7-engine {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 4px 12px;
+  text-align: left; font-family: var(--body); color: var(--ink);
+  background: var(--panel-2); border: 2px dashed var(--line-2); border-radius: 14px;
+  padding: 12px 16px; cursor: pointer; transition: border-color 0.15s, transform 0.12s;
+}
+.rs7-engine:hover:not(:disabled) { border-color: var(--yellow); transform: translate(-2px, -2px); }
+.rs7-engine.on { border-style: solid; border-color: var(--green); cursor: default; }
+.rs7-engine:disabled { opacity: 1; }
+.rs7-engine-icon { grid-row: 1 / 3; font-size: 30px; line-height: 1; }
+.rs7-engine-label { font-family: var(--display); font-weight: 700; font-size: 17px; }
+.rs7-engine-blurb { grid-column: 2; font-size: 13px; color: var(--mute); font-weight: 700; }
+.rs7-engine-tick { grid-row: 1 / 3; font-weight: 800; font-size: 12.5px; color: var(--mute); white-space: nowrap; }
+.rs7-engine.on .rs7-engine-tick { color: var(--green); }
+
+.rs7-brainbox {
+  display: flex; align-items: center; gap: 12px; justify-content: center;
+  background: var(--panel-2); border: 2px dashed var(--line-2); border-radius: 16px;
+  padding: 16px; margin-bottom: 16px; transition: border-color 0.2s, background 0.2s;
+}
+.rs7-brainbox-icon { font-size: 34px; line-height: 1; filter: grayscale(1) opacity(0.5); transition: filter 0.2s; }
+.rs7-brainbox-text { font-family: var(--display); font-weight: 700; font-size: 17px; color: var(--mute); }
+.rs7-brainbox.lit { border-style: solid; border-color: var(--green); background: rgba(122, 229, 130, 0.08); animation: rs7-pop 0.4s ease-out; }
+.rs7-brainbox.lit .rs7-brainbox-icon { filter: none; }
+.rs7-brainbox.lit .rs7-brainbox-text { color: var(--green); }
+@keyframes rs7-pop {
+  0% { transform: scale(0.9); }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* library feed cards */
+.rs7-packs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.rs7-pack {
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px;
+  min-height: 56px; text-align: left; font-family: var(--body); font-weight: 700; font-size: 16px;
+  color: var(--ink); background: var(--panel-2); border: 2px solid var(--line-2);
+  border-radius: 14px; padding: 10px 16px; cursor: pointer; transition: border-color 0.15s, transform 0.12s;
+}
+.rs7-pack:hover:not(:disabled) { border-color: var(--yellow); transform: translate(-2px, -2px); }
+.rs7-pack.done { border-color: var(--green); cursor: default; }
+.rs7-pack-icon { font-size: 26px; line-height: 1; }
+.rs7-pack-tick { font-weight: 800; font-size: 12.5px; color: var(--mute); white-space: nowrap; }
+.rs7-pack.done .rs7-pack-tick { color: var(--green); }
+
+/* the question the kid asks */
+.rs7-ask {
+  font-family: var(--display); font-size: 19px; line-height: 1.5; color: var(--ink);
+  background: var(--panel-2); border: 2px dashed var(--line-2);
+  border-radius: 14px; padding: 14px 18px; margin-bottom: 14px;
+}
+
+/* chat: the send chips */
+.rs7-chips-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.rs7-sendchip {
+  min-height: 48px; text-align: left; font-family: var(--body); font-weight: 700; font-size: 15px;
+  color: var(--bg); background: var(--blue); border: none; border-radius: 12px;
+  padding: 10px 16px; cursor: pointer; transition: transform 0.12s;
+}
+.rs7-sendchip:hover { transform: translate(-2px, -2px); }
+
+/* the three-step "how it thought" breakdown */
+.rs7-steps {
+  display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;
+  background: var(--panel-2); border: 2px solid var(--line); border-radius: 14px; padding: 14px 16px;
+}
+.rs7-step { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; animation: rs7-stepin 0.35s ease-out both; }
+@keyframes rs7-stepin {
+  0% { transform: translateY(6px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.rs7-step-tag { font-weight: 800; font-size: 12.5px; color: var(--mute); text-transform: uppercase; letter-spacing: 0.4px; min-width: 96px; }
+.rs7-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.rs7-chip {
+  font-weight: 700; font-size: 13px; color: var(--ink);
+  background: var(--line); border-radius: 8px; padding: 3px 9px;
+}
+.rs7-chip.hot { color: var(--bg); background: var(--yellow); }
+.rs7-attend { font-family: var(--display); font-weight: 700; font-size: 17px; color: var(--yellow); }
+.rs7-pred { font-weight: 700; font-size: 15px; color: var(--green); }
+
+/* chat: the robot's spoken reply bubble */
+.rs7-bubble {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+  background: var(--green); color: var(--bg);
+  border-radius: 14px 14px 14px 4px; padding: 12px 16px; margin-bottom: 14px;
+}
+.rs7-bubble-who { font-weight: 800; font-size: 13.5px; }
+.rs7-bubble-say { font-family: var(--display); font-weight: 700; font-size: 17px; line-height: 1.35; }
+
+/* exam: the compact one-line indicator */
+.rs7-mini { font-weight: 700; font-size: 13px; color: var(--mute); margin: 2px 0 8px; }
+
 /* ── small screens ───────────────────────────────────────── */
 @media (max-width: 760px) {
   .hero { grid-template-columns: 1fr; padding-top: 24px; }
