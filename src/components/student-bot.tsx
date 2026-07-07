@@ -117,6 +117,17 @@ export function StudentBot({
           </g>
         )}
 
+        {/* mission clipboard: the robot picks it up once it learns to plan */}
+        {has("clipboard") && (
+          <g>
+            <rect x="104" y="206" width="52" height="40" rx="4" fill="#d9e6f2" stroke="#16283a" strokeWidth="2.5" />
+            <rect x="121" y="201" width="18" height="9" rx="2.5" fill="#ff8c42" stroke="#16283a" strokeWidth="2" />
+            <line x1="112" y1="218" x2="148" y2="218" stroke="#16283a" strokeWidth="2.5" strokeLinecap="round" />
+            <line x1="112" y1="227" x2="148" y2="227" stroke="#16283a" strokeWidth="2.5" strokeLinecap="round" />
+            <line x1="112" y1="236" x2="140" y2="236" stroke="#16283a" strokeWidth="2.5" strokeLinecap="round" />
+          </g>
+        )}
+
         {/* little treads */}
         <rect x="88" y="248" width="34" height="18" rx="9" fill="#0b1622" stroke="#3d5a75" strokeWidth="3.5" />
         <rect x="138" y="248" width="34" height="18" rx="9" fill="#0b1622" stroke="#3d5a75" strokeWidth="3.5" />

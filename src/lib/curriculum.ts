@@ -152,7 +152,7 @@ export const CLASSES: SchoolClass[] = [
     vocab: ["plan", "steps"],
     part: { id: "clipboard", label: "Mission clipboard", icon: "📋" },
     term: 3,
-    live: false,
+    live: true,
   },
 ];
 
