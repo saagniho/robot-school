@@ -128,7 +128,7 @@ export const CLASSES: SchoolClass[] = [
     vocab: ["prompt"],
     part: { id: "decoder", label: "Wish decoder", icon: "🎯" },
     term: 2,
-    live: false,
+    live: true,
   },
   {
     num: 9,

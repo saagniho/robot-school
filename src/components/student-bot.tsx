@@ -50,6 +50,16 @@ export function StudentBot({
           </g>
         )}
 
+        {/* wish decoder: a target reticle on the forehead once installed */}
+        {has("decoder") ? (
+          <g>
+            <circle cx="130" cy="66" r="7" fill="none" stroke="#f72585" strokeWidth="3" />
+            <circle cx="130" cy="66" r="2.5" fill="#f72585" />
+          </g>
+        ) : (
+          <circle cx="130" cy="66" r="6" fill="none" stroke="#1e3348" strokeWidth="2" strokeDasharray="3 3" />
+        )}
+
         {/* mouth: a blank seam until the voice box is installed */}
         {has("voice") ? (
           <rect x="115" y="106" width="30" height="9" rx="4.5" fill="#7ae582" />

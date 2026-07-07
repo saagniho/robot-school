@@ -850,6 +850,55 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 /* exam: the compact one-line indicator */
 .rs7-mini { font-weight: 700; font-size: 13px; color: var(--mute); margin: 2px 0 8px; }
 
+/* ── class 8: magic words ─────────────────────────────────── */
+.rs8-ask {
+  font-family: var(--display); font-weight: 700; font-size: 20px; line-height: 1.3;
+  color: var(--ink); background: var(--panel-2); border: 2px dashed var(--line-2);
+  border-radius: 12px; padding: 12px 16px; margin-bottom: 14px;
+}
+.rs8-count { font-weight: 800; font-size: 13.5px; color: var(--mute); margin-bottom: 12px; }
+
+.rs8-group { margin-bottom: 12px; }
+.rs8-group-label {
+  font-weight: 800; font-size: 12px; color: var(--blue);
+  text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px;
+}
+.rs8-chiprow { display: flex; flex-wrap: wrap; gap: 8px; }
+.rs8-chip {
+  min-height: 48px; font-family: var(--body); font-weight: 700; font-size: 14.5px;
+  color: var(--ink); background: var(--panel-2); border: 2px solid var(--line-2);
+  border-radius: 12px; padding: 10px 14px; cursor: pointer; transition: border-color 0.15s, transform 0.15s;
+}
+.rs8-chip:hover { border-color: var(--yellow); transform: translate(-2px, -2px); }
+.rs8-chip.on {
+  border-color: var(--green); border-style: solid; background: rgba(122, 229, 130, 0.12);
+  color: var(--green); animation: rs8-popin 0.25s ease-out;
+}
+@keyframes rs8-popin {
+  0% { transform: scale(0.9); }
+  60% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.rs8-bubble {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px;
+  background: var(--panel-2); border: 2px solid var(--blue);
+  border-radius: 14px 14px 14px 4px; padding: 12px 16px; margin: 4px 0 10px;
+}
+.rs8-bubble-who { font-weight: 800; font-size: 13.5px; color: var(--blue); white-space: nowrap; }
+.rs8-bubble-say { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1.35; }
+
+.rs8-stars { display: flex; gap: 4px; font-size: 26px; line-height: 1; margin-bottom: 10px; }
+.rs8-star { color: var(--line-2); transition: color 0.2s, transform 0.2s; }
+.rs8-star.on { color: var(--yellow); animation: rs8-starpop 0.3s ease-out; }
+@keyframes rs8-starpop {
+  0% { transform: scale(0.4) rotate(-20deg); }
+  70% { transform: scale(1.25) rotate(6deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.rs8-ready { font-weight: 800; font-size: 14.5px; color: var(--green); margin: 0 0 10px; }
+
 /* ── small screens ───────────────────────────────────────── */
 @media (max-width: 760px) {
   .hero { grid-template-columns: 1fr; padding-top: 24px; }
