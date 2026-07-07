@@ -899,6 +899,42 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 
 .rs8-ready { font-weight: 800; font-size: 14.5px; color: var(--green); margin: 0 0 10px; }
 
+/* ── class 9: hands & legs ────────────────────────────────── */
+.rs9-job {
+  font-family: var(--display); font-weight: 700; font-size: 20px; line-height: 1.3;
+  color: var(--ink); background: var(--panel-2); border: 2px dashed var(--line-2);
+  border-radius: 12px; padding: 12px 16px; margin-bottom: 14px;
+}
+.rs9-count { font-weight: 800; font-size: 13.5px; color: var(--mute); margin-bottom: 12px; }
+
+.rs9-toolgrid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.rs9-toolcard {
+  flex: 1 1 120px; min-height: 64px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px;
+  font-family: var(--body); font-weight: 700; font-size: 14px;
+  color: var(--ink); background: var(--panel-2); border: 2px solid var(--line-2);
+  border-radius: 14px; padding: 12px 14px; cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.rs9-toolcard-icon { font-size: 28px; }
+.rs9-toolcard:hover:not(:disabled) { border-color: var(--yellow); transform: translate(-2px, -2px); }
+.rs9-toolcard:disabled { cursor: default; }
+.rs9-toolcard.on {
+  border-color: var(--blue); border-style: solid; background: rgba(76, 201, 240, 0.12);
+  color: var(--blue); animation: rs8-popin 0.25s ease-out;
+}
+.rs9-toolcard.correct { border-color: var(--green); background: rgba(122, 229, 130, 0.14); color: var(--green); }
+.rs9-toolcard.wrong { border-color: var(--pink); background: rgba(247, 37, 133, 0.1); color: var(--pink); }
+
+.rs9-feedback { font-weight: 700; font-size: 14.5px; margin: 0 0 12px; }
+.rs9-feedback.good { color: var(--green); }
+.rs9-feedback.bad { color: var(--mute); }
+
+.rs9-result {
+  font-family: var(--display); font-weight: 700; font-size: 19px;
+  color: var(--green); margin: 4px 0 2px;
+}
+
 /* ── small screens ───────────────────────────────────────── */
 @media (max-width: 760px) {
   .hero { grid-template-columns: 1fr; padding-top: 24px; }

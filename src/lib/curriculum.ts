@@ -140,7 +140,7 @@ export const CLASSES: SchoolClass[] = [
     vocab: ["tool", "agent"],
     part: { id: "arms", label: "Arms + tool belt", icon: "🦾" },
     term: 3,
-    live: false,
+    live: true,
   },
   {
     num: 10,
