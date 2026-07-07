@@ -476,7 +476,7 @@ export function ClassFour() {
           <div className="rs3-words">🔓 new word: <b>token</b></div>
           <div className="rs3-next">
             <b>Next class:</b> The Guessing Game — {getClass("the-guessing-game")?.hook}{" "}
-            <i>(being built!)</i>
+            <Link href="/class/the-guessing-game/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
           </div>
           <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
         </section>

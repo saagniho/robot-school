@@ -480,7 +480,7 @@ export function ClassSix() {
           <div className="rs3-words">🔓 new words: <b>attention</b> · <b>context</b></div>
           <div className="rs3-next">
             <b>Next class:</b> The Big Brain — {getClass("the-big-brain")?.hook}{" "}
-            <i>(being built!)</i>
+            <Link href="/class/the-big-brain/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
           </div>
           <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
         </section>

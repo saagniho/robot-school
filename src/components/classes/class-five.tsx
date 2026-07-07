@@ -444,7 +444,7 @@ export function ClassFive() {
           <div className="rs3-words">🔓 new word: <b>predict</b></div>
           <div className="rs3-next">
             <b>Next class:</b> Pay Attention! — {getClass("pay-attention")?.hook}{" "}
-            <i>(being built!)</i>
+            <Link href="/class/pay-attention/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
           </div>
           <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
         </section>

@@ -522,7 +522,8 @@ export function ClassOne() {
               <div className="rs1-words">🔓 new words: <b>AI</b> · <b>learning</b></div>
               <div className="rs1-next">
                 <b>Next class:</b> Good Examples, Great Student — feed it 3 examples… then 30.
-                Then sneak in some WRONG ones. <i>(being built!)</i>
+                Then sneak in some WRONG ones.{" "}
+                <Link href="/class/good-examples-great-student/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
               </div>
               <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
             </>

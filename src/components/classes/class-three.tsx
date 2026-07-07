@@ -500,7 +500,7 @@ export function ClassThree() {
           <div className="rs3-words">🔓 new word: <b>generative</b></div>
           <div className="rs3-next">
             <b>Next class:</b> Robot Words — {getClass("robot-words")?.hook}{" "}
-            <i>(being built!)</i>
+            <Link href="/class/robot-words/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
           </div>
           <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
         </section>

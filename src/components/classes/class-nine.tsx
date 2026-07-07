@@ -422,7 +422,7 @@ export function ClassNine() {
           <div className="rs3-words">🔓 new words: <b>tool</b> · <b>agent</b></div>
           <div className="rs3-next">
             <b>Next class:</b> The Master Plan — {getClass("the-master-plan")?.hook}{" "}
-            <i>(being built!)</i>
+            <Link href="/class/the-master-plan/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
           </div>
           <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
         </section>

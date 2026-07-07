@@ -523,7 +523,7 @@ export function ClassTwo() {
           <div className="rs2-words">🔓 new words: <b>training</b> · <b>examples</b></div>
           <div className="rs2-next">
             <b>Next class:</b> Spotters &amp; Makers — {getClass("spotters-and-makers")?.hook}{" "}
-            <i>(being built!)</i>
+            <Link href="/class/spotters-and-makers/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
           </div>
           <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
         </section>
