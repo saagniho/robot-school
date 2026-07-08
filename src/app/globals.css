@@ -998,37 +998,44 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 }
 
 /* ── lesson feedback box (report cards) ──────────────────── */
+/* Compact, tucked to the right, styled as a small optional side-note so it
+   doesn't compete with the report. Stays full-width-safe at 360px. */
+.fb, .fb-thanks { max-width: 300px; margin: 16px 0 2px auto; }
 .fb {
-  margin: 18px 0 4px; padding: 16px; border-radius: 16px;
-  background: var(--panel-2); border: 2px solid var(--line);
-  display: flex; flex-direction: column; gap: 12px;
+  padding: 12px 13px; border-radius: 13px;
+  background: var(--panel); border: 2px dashed var(--line-2);
+  display: flex; flex-direction: column; gap: 8px;
 }
-.fb-q { font-family: var(--display); font-weight: 700; font-size: 18px; color: var(--ink); }
-.fb-faces { display: flex; gap: 10px; flex-wrap: wrap; }
+.fb-q { font-family: var(--display); font-weight: 700; font-size: 13.5px; color: var(--mute); }
+.fb-faces { display: flex; gap: 6px; }
 .fb-face {
-  flex: 1 1 90px; min-height: 72px; cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 8px;
-  background: var(--panel); border: 2px solid var(--line-2); border-radius: 14px;
+  flex: 1 1 0; min-width: 0; min-height: 50px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 6px 3px;
+  background: var(--panel-2); border: 2px solid var(--line-2); border-radius: 10px;
   color: var(--mute); transition: transform 0.12s, border-color 0.12s, color 0.12s;
 }
-.fb-face-icon { font-size: 26px; }
-.fb-face-label { font-size: 12.5px; font-weight: 700; }
+.fb-face-icon { font-size: 20px; }
+.fb-face-label { font-size: 10px; font-weight: 700; line-height: 1.1; text-align: center; }
 .fb-face:hover { transform: translateY(-2px); border-color: var(--yellow); }
-.fb-face.on { border-color: var(--yellow); color: var(--ink); box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35); }
+.fb-face.on { border-color: var(--yellow); color: var(--ink); }
 .fb-text {
-  width: 100%; box-sizing: border-box; resize: vertical; min-height: 44px;
-  padding: 10px 12px; font-family: var(--body); font-size: 15px; color: var(--ink);
-  background: var(--panel); border: 2px solid var(--line-2); border-radius: 12px;
+  width: 100%; box-sizing: border-box; resize: vertical; min-height: 32px;
+  padding: 7px 9px; font-family: var(--body); font-size: 13px; color: var(--ink);
+  background: var(--panel-2); border: 2px solid var(--line-2); border-radius: 9px;
 }
 .fb-text::placeholder { color: var(--mute); }
-.fb-send { align-self: flex-start; }
-.fb-send:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
-.fb-thanks {
-  margin: 18px 0 4px; padding: 16px; border-radius: 16px;
-  background: var(--panel-2); border: 2px solid var(--green);
-  font-weight: 700; color: var(--ink); text-align: center;
+.fb-send {
+  align-self: flex-end; cursor: pointer;
+  font-family: var(--display); font-weight: 700; font-size: 13px; color: var(--bg);
+  background: var(--yellow); border: none; border-radius: 9px; padding: 7px 15px;
 }
-.fb-err { font-size: 13.5px; color: var(--orange); font-weight: 700; }
+.fb-send:disabled { opacity: 0.45; cursor: not-allowed; }
+.fb-thanks {
+  padding: 12px 13px; border-radius: 13px;
+  background: var(--panel); border: 2px solid var(--green);
+  font-weight: 700; font-size: 13px; color: var(--ink); text-align: center;
+}
+.fb-err { font-size: 12px; color: var(--orange); font-weight: 700; }
 
 /* ── small screens ───────────────────────────────────────── */
 @media (max-width: 760px) {

@@ -101,7 +101,7 @@ export function LessonFeedback({ classSlug }: { classSlug: string }) {
         rows={2}
         aria-label="What would make it better?"
       />
-      <button className="bigbtn lsn-go fb-send" onClick={submit} disabled={!rating || status === "sending"}>
+      <button className="fb-send" onClick={submit} disabled={!rating || status === "sending"}>
         {status === "sending" ? "Sending…" : "📮 Send feedback"}
       </button>
       {status === "error" && (
