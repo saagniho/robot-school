@@ -17,7 +17,7 @@ import Link from "next/link";
 import { StudentBot } from "@/components/student-bot";
 import { Dialogue } from "@/components/dialogue";
 import { NowStrip } from "@/components/now-strip";
-import { loadSchool, partsFor } from "@/lib/progress";
+import { loadSchool, partsFor, setTeacherName } from "@/lib/progress";
 import { CLASSES } from "@/lib/curriculum";
 import { allClassesDone, QUESTIONS } from "@/lib/grad";
 
@@ -25,7 +25,6 @@ type Stage = "boot" | "gate" | "intro" | "quiz" | "diploma";
 
 const CLASS_SLUGS = CLASSES.map((c) => c.slug);
 const ALL_PARTS = ["eyes", "memory", "bulb", "ears", "voice", "antenna", "brain", "decoder", "arms", "clipboard"];
-const TEACHER_KEY = "rs:teacher";
 
 const CONFETTI = [
   { left: 6, delay: 0, color: "#ffce31" }, { left: 14, delay: 0.25, color: "#f72585" },
@@ -68,6 +67,10 @@ export function Graduation() {
     const s = loadSchool();
     if (s.robotName) setName(s.robotName);
     setDone(s.done);
+    if (s.teacherName) {
+      setTeacherInput(s.teacherName);
+      setSignedName(s.teacherName);
+    }
     setStage(allClassesDone(s.done, CLASS_SLUGS) ? "intro" : "gate");
   }, []);
 
@@ -76,18 +79,6 @@ export function Graduation() {
     setRevealed(false);
     setWrongOnCurrent(false);
   }, [qIdx]);
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(TEACHER_KEY);
-      if (saved) {
-        setTeacherInput(saved);
-        setSignedName(saved);
-      }
-    } catch {
-      // storage blocked — the diploma just stays unsigned this visit
-    }
-  }, []);
 
   const doneCount = CLASSES.filter((c) => done.includes(c.slug)).length;
   const current = QUESTIONS[qIdx];
@@ -114,11 +105,7 @@ export function Graduation() {
     const trimmed = teacherInput.trim().slice(0, 24);
     if (!trimmed) return;
     setSignedName(trimmed);
-    try {
-      localStorage.setItem(TEACHER_KEY, trimmed);
-    } catch {
-      // storage blocked — the signature still shows for this visit
-    }
+    setTeacherName(trimmed);
   }
 
   const parts = stage === "gate" ? partsFor(done) : ALL_PARTS;
@@ -249,17 +236,19 @@ export function Graduation() {
             </div>
           </form>
 
-          <div className="grad-diploma">
-            <div className="grad-diploma-seal" aria-hidden>🏅</div>
+          <div className="grad-diploma" id="grad-diploma">
+            <div className="grad-diploma-crest" aria-hidden>🤖</div>
             <div className="grad-diploma-school">ROBOT SCHOOL</div>
             <div className="grad-diploma-title">DIPLOMA OF ROBOT-TEACHING</div>
+            <div className="grad-diploma-trophy" aria-hidden>🏆</div>
             <p className="grad-diploma-body">
               This certifies that <b>{name}</b> — taught, part by part, by{" "}
               <b>{signedName || "________"}</b> — has graduated from Robot
               School, and now knows AI from tokens to agents.
             </p>
             <div className="grad-diploma-date">{new Date().toLocaleDateString()}</div>
-            <div className="grad-diploma-stars" aria-hidden>⭐ ⭐ ⭐</div>
+            <div className="grad-diploma-stars" aria-hidden>🏅 ⭐ ⭐ ⭐ 🏅</div>
+            <div className="grad-diploma-url">saagniho.github.io/robot-school</div>
           </div>
 
           <button type="button" className="bigbtn lsn-go grad-print" onClick={() => window.print()}>

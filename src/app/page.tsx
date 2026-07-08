@@ -4,6 +4,7 @@ import { HeroBot } from "@/components/hero-bot";
 import { ClassStatus } from "@/components/class-status";
 import { DoneStamp } from "@/components/done-stamp";
 import { GradCard } from "@/components/grad-card";
+import { TeacherGate } from "@/components/teacher-gate";
 
 /** The lowest class not yet built — its card wears the "being built" badge. */
 const NEXT_BUILD = Math.min(...CLASSES.filter((c) => !c.live).map((c) => c.num));
@@ -57,12 +58,7 @@ export default function Home() {
             because <b>you</b> taught it every trick. Welcome to Robot School,
             teacher.
           </p>
-          <div className="hero-cta">
-            <a href="#schedule" className="bigbtn">
-              🎒 See the class schedule
-            </a>
-            <span className="finePrint">free · no logins · runs right in your browser</span>
-          </div>
+          <TeacherGate />
         </div>
         <div className="hero-bot">
           <HeroBot />

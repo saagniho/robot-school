@@ -1056,6 +1056,48 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 }
 .fb-err { font-size: 12px; color: var(--orange); font-weight: 700; }
 
+/* ── teacher gate (hero front door) ──────────────────────── */
+.tg { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; max-width: 470px; }
+.tg-q { font-family: var(--display); font-weight: 700; font-size: 18px; color: var(--ink); }
+.tg-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.tg-input {
+  flex: 1 1 180px; min-width: 0; min-height: 50px; box-sizing: border-box;
+  padding: 10px 14px; font-family: var(--body); font-size: 17px; color: var(--ink);
+  background: var(--panel); border: 2px solid var(--line-2); border-radius: 14px;
+}
+.tg-input::placeholder { color: var(--mute); }
+.tg-greet { font-family: var(--display); font-weight: 700; font-size: 23px; color: var(--ink); }
+.tg-greet b { color: var(--yellow); }
+.tg-prog { font-weight: 700; color: var(--mute); font-size: 15px; margin-top: -4px; }
+.tg-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-top: 4px; }
+.tg-reset {
+  cursor: pointer; background: none; border: none;
+  font-family: var(--display); font-weight: 700; font-size: 14px; color: var(--mute);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.tg-reset:hover { color: var(--pink); }
+.tg-confirm {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  font-weight: 700; font-size: 14px; color: var(--ink);
+  background: var(--panel-2); border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px;
+}
+.tg-yes, .tg-no {
+  cursor: pointer; font-family: var(--display); font-weight: 700; font-size: 13px;
+  border-radius: 10px; padding: 6px 14px; border: 2px solid;
+}
+.tg-yes { color: var(--bg); background: var(--pink); border-color: var(--pink); }
+.tg-no { color: var(--ink); background: transparent; border-color: var(--line-2); }
+.tg-browse { font-weight: 700; font-size: 13.5px; color: var(--mute); text-decoration: none; }
+.tg-browse:hover { color: var(--blue); }
+
+/* diploma crest / trophy / site url */
+.grad-diploma-crest { font-size: 42px; line-height: 1; }
+.grad-diploma-trophy { font-size: 34px; line-height: 1; margin: 4px 0; }
+.grad-diploma-url {
+  margin-top: 14px; font-family: var(--display); font-weight: 700; font-size: 12px;
+  letter-spacing: 0.5px; color: var(--mute);
+}
+
 /* ── small screens ───────────────────────────────────────── */
 @media (max-width: 760px) {
   .hero { grid-template-columns: 1fr; padding-top: 24px; }
