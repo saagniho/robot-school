@@ -1000,7 +1000,17 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 /* ── lesson feedback box (report cards) ──────────────────── */
 /* Compact, tucked to the right, styled as a small optional side-note so it
    doesn't compete with the report. Stays full-width-safe at 360px. */
-.fb, .fb-thanks { max-width: 300px; margin: 16px 0 2px auto; }
+.fb, .fb-thanks { margin: 16px 0 2px; }
+/* On wide screens, park it in the wasted right margin as a fixed side panel
+   so it never disturbs the centered lesson column. Stacks in-flow below the
+   card on smaller screens. Ancestors have no transform, so fixed is not
+   clipped by the report card's overflow:hidden. */
+@media (min-width: 1200px) {
+  .fb, .fb-thanks {
+    position: fixed; left: calc(50% + 320px); top: 50%;
+    transform: translateY(-50%); width: 232px; margin: 0; z-index: 30;
+  }
+}
 .fb {
   padding: 12px 13px; border-radius: 13px;
   background: var(--panel); border: 2px dashed var(--line-2);
