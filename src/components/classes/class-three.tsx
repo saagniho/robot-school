@@ -13,6 +13,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { LessonFeedback } from "@/components/lesson-feedback";
 import { StudentBot } from "@/components/student-bot";
 import { FruitSticker } from "@/components/fruit-sticker";
 import { Dialogue } from "@/components/dialogue";
@@ -502,6 +503,7 @@ export function ClassThree() {
             <b>Next class:</b> Robot Words — {getClass("robot-words")?.hook}{" "}
             <Link href="/class/robot-words/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
           </div>
+          <LessonFeedback classSlug={SLUG} />
           <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
         </section>
       )}

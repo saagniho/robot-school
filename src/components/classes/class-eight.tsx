@@ -15,6 +15,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { LessonFeedback } from "@/components/lesson-feedback";
 import { StudentBot } from "@/components/student-bot";
 import { Dialogue } from "@/components/dialogue";
 import { MissionCard } from "@/components/mission-card";
@@ -400,6 +401,7 @@ export function ClassEight() {
             <b>Next class:</b> Hands & Legs — {getClass("hands-and-legs")?.hook}{" "}
             <Link href="/class/hands-and-legs/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
           </div>
+          <LessonFeedback classSlug={SLUG} />
           <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
         </section>
       )}

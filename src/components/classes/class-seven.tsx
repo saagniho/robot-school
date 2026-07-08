@@ -14,6 +14,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { LessonFeedback } from "@/components/lesson-feedback";
 import { StudentBot } from "@/components/student-bot";
 import { Dialogue } from "@/components/dialogue";
 import { MissionCard } from "@/components/mission-card";
@@ -498,6 +499,7 @@ export function ClassSeven() {
             <b>Next class:</b> Magic Words — {getClass("magic-words")?.hook}{" "}
             <Link href="/class/magic-words/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
           </div>
+          <LessonFeedback classSlug={SLUG} />
           <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
         </section>
       )}

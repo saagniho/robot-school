@@ -10,6 +10,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { LessonFeedback } from "@/components/lesson-feedback";
 import { StudentBot } from "@/components/student-bot";
 import { FruitSticker } from "@/components/fruit-sticker";
 import { Dialogue } from "@/components/dialogue";
@@ -525,6 +526,7 @@ export function ClassOne() {
                 Then sneak in some WRONG ones.{" "}
                 <Link href="/class/good-examples-great-student/" style={{ color: "var(--yellow)", fontWeight: 800 }}>▶ Play it now!</Link>
               </div>
+              <LessonFeedback classSlug={SLUG} />
               <Link href="/" className="bigbtn lsn-go">🏫 Back to school</Link>
             </>
           ) : (
