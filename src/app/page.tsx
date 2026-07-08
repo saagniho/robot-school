@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CLASSES, GRADUATION, TERMS, type SchoolClass } from "@/lib/curriculum";
 import { HeroBot } from "@/components/hero-bot";
 import { ClassStatus } from "@/components/class-status";
+import { DoneStamp } from "@/components/done-stamp";
 
 /** The lowest class not yet built — its card wears the "being built" badge. */
 const NEXT_BUILD = Math.min(...CLASSES.filter((c) => !c.live).map((c) => c.num));
@@ -10,7 +11,10 @@ function CardBody({ c }: { c: SchoolClass }) {
   return (
     <>
       <div className="classcard-top">
-        <span className="classnum">Class {c.num}</span>
+        <span className="classnum-row">
+          <span className="classnum">Class {c.num}</span>
+          <DoneStamp slug={c.slug} />
+        </span>
         <span className="partchip">
           {c.part.icon} {c.part.label}
         </span>
