@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { CLASSES, GRADUATION, TERMS, type SchoolClass } from "@/lib/curriculum";
+import { CLASSES, TERMS, type SchoolClass } from "@/lib/curriculum";
 import { HeroBot } from "@/components/hero-bot";
 import { ClassStatus } from "@/components/class-status";
 import { DoneStamp } from "@/components/done-stamp";
+import { GradCard } from "@/components/grad-card";
 
 /** The lowest class not yet built — its card wears the "being built" badge. */
 const NEXT_BUILD = Math.min(...CLASSES.filter((c) => !c.live).map((c) => c.num));
@@ -123,15 +124,7 @@ export default function Home() {
           </div>
         ))}
 
-        <article className="classcard grad">
-          <div className="classcard-top">
-            <span className="classnum">Finale</span>
-            <span className="partchip">🎓 Graduation cap</span>
-          </div>
-          <h3>{GRADUATION.title}</h3>
-          <p className="classhook">{GRADUATION.hook}</p>
-          <div className="classstatus">🔒 opens after Class 10</div>
-        </article>
+        <GradCard />
       </section>
 
       <footer className="foot">

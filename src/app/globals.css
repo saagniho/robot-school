@@ -1071,3 +1071,89 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
   .wordmark { font-size: 22px; }
   .classlist { grid-template-columns: 1fr; }
 }
+
+/* ── graduation day (the finale) ─────────────────────────── */
+.grad-bot-wrap { position: relative; }
+.grad-cap {
+  position: absolute; top: 4px; left: 50%; z-index: 3;
+  font-size: 54px; transform: translateX(-50%) rotate(-8deg);
+  filter: drop-shadow(3px 3px 0 rgba(0, 0, 0, 0.35));
+  animation: grad-capdrop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+@keyframes grad-capdrop {
+  0% { transform: translate(-50%, -40px) rotate(-8deg); opacity: 0; }
+  100% { transform: translateX(-50%) rotate(-8deg); opacity: 1; }
+}
+
+.grad-progress {
+  display: inline-block; font-family: var(--display); font-weight: 700; font-size: 18px;
+  color: var(--yellow); background: var(--panel-2); border: 2px dashed var(--line-2);
+  border-radius: 14px; padding: 10px 16px; margin: 0 0 18px;
+}
+
+.grad-qcount { font-weight: 700; font-size: 13.5px; color: var(--mute); margin-bottom: 10px; }
+
+.grad-whisper { margin-bottom: 14px; }
+.grad-whisper-text {
+  font-family: var(--display); font-size: 17px; line-height: 1.4; color: var(--ink);
+  background: var(--panel-2); border: 2px dashed var(--line-2);
+  border-radius: 4px 14px 14px 14px; padding: 10px 14px;
+}
+.grad-hint .grad-whisper-text { color: var(--orange); border-color: var(--orange); }
+
+.grad-q { font-size: 22px; margin: 4px 0 14px; }
+
+.grad-opts { display: flex; flex-direction: column; gap: 10px; margin-bottom: 6px; }
+.grad-optbtn {
+  min-height: 52px; text-align: left; cursor: pointer;
+  font-family: var(--body); font-weight: 700; font-size: 15.5px; color: var(--ink);
+  background: var(--panel-2); border: 2px solid var(--line-2); border-radius: 14px;
+  padding: 12px 16px; transition: transform 0.12s, border-color 0.12s;
+}
+.grad-optbtn:hover { border-color: var(--yellow); transform: translate(-2px, -2px); }
+.grad-optbtn:active { transform: translate(1px, 1px); }
+
+.grad-headline { font-size: 30px; margin: 4px 0 10px; color: var(--yellow); }
+.grad-stat { color: var(--ink) !important; font-weight: 700; font-size: 15px; }
+
+.grad-signform { margin: 4px 0 20px; }
+.grad-signform label { display: block; font-weight: 800; font-size: 13.5px; color: var(--mute); margin-bottom: 8px; }
+.grad-signrow { display: flex; gap: 10px; flex-wrap: wrap; align-items: stretch; }
+.grad-signrow .rs1-nameinput { flex: 1 1 170px; }
+
+.grad-diploma {
+  position: relative; text-align: center; margin: 6px 0 22px;
+  background: linear-gradient(180deg, #fdf6e3, #f6ecc9);
+  color: #2a2110; border: 6px double #b8891f; border-radius: 10px;
+  padding: 30px 26px 26px; box-shadow: var(--shadow);
+}
+.grad-diploma-seal { position: absolute; top: 14px; right: 16px; font-size: 38px; transform: rotate(12deg); }
+.grad-diploma-school { font-family: var(--display); font-weight: 700; font-size: 14px; letter-spacing: 3px; color: #8a6a12; }
+.grad-diploma-title { font-family: var(--display); font-weight: 700; font-size: 24px; margin: 6px 0 16px; }
+.grad-diploma-body { font-size: 15px; line-height: 1.6; margin: 0 0 14px; color: #2a2110; }
+.grad-diploma-body b { color: #5b3d00; }
+.grad-diploma-date { font-weight: 700; font-size: 13px; color: #8a6a12; }
+.grad-diploma-stars { margin-top: 8px; font-size: 16px; letter-spacing: 6px; }
+
+.grad-print { margin-right: 10px; }
+.grad-home { background: var(--panel-2); color: var(--ink); border: 2px solid var(--line-2); }
+.grad-home:hover { border-color: var(--yellow); }
+
+@media (max-width: 420px) {
+  .grad-headline { font-size: 24px; }
+  .grad-diploma-title { font-size: 19px; }
+}
+
+/* ── print: only the diploma survives (kept out of screen flow) ── */
+@media print {
+  body * { visibility: hidden; }
+  .grad-diploma, .grad-diploma * { visibility: visible; }
+  .grad-diploma {
+    position: fixed; inset: 0; margin: 0; border-radius: 0;
+    box-shadow: none; border: 10px double #b8891f;
+    background: #fff; color: #000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px 40px;
+  }
+  .grad-diploma-body, .grad-diploma-body b, .grad-diploma-date, .grad-diploma-school { color: #000; }
+}
