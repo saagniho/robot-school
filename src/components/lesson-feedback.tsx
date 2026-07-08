@@ -12,7 +12,7 @@
  */
 import { useState } from "react";
 
-const FEEDBACK_ENDPOINT = ""; // e.g. "https://formspree.io/f/xldgabcd"
+const FEEDBACK_ENDPOINT = "https://formspree.io/f/meebwzno";
 
 type Rating = "loved" | "okay" | "confusing";
 type Status = "idle" | "sending" | "done" | "error";
