@@ -1173,7 +1173,7 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 .grad-diploma-school { font-family: var(--display); font-weight: 700; font-size: 14px; letter-spacing: 3px; color: #8a6a12; }
 .grad-diploma-title { font-family: var(--display); font-weight: 700; font-size: 24px; margin: 6px 0 16px; }
 .grad-diploma-body { font-size: 15px; line-height: 1.6; margin: 0 0 14px; color: #2a2110; }
-.grad-diploma-body b { color: #5b3d00; }
+.grad-diploma .grad-diploma-body b { color: #5b3d00; }
 .grad-diploma-date { font-weight: 700; font-size: 13px; color: #8a6a12; }
 .grad-diploma-stars { margin-top: 8px; font-size: 16px; letter-spacing: 6px; }
 
