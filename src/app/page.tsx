@@ -131,6 +131,9 @@ export default function Home() {
         </p>
         <VisitCount />
         <p className="foot-tiny">built by a dad &amp; Claude, for one particular young scientist 🔬</p>
+        <p className="foot-tiny">
+          created by Saurabh Agnihotri · <a href="mailto:sau.electra@gmail.com">sau.electra@gmail.com</a>
+        </p>
       </footer>
     </main>
   );
