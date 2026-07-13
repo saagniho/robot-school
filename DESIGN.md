@@ -49,8 +49,18 @@ micro-action. No autoplaying sound.
 - No timers that advance the screen; the kid sets the pace.
 
 ## 8. Tech guardrails
-- Next.js static export on GitHub Pages. No backend, no accounts, no analytics.
-- Runtime deps: react, react-dom, next. Nothing else without a written reason here.
+- Next.js static export on GitHub Pages. No backend, no accounts.
+- Analytics: GoatCounter ONLY (amended 2026-07-13) — cookie-less, aggregate,
+  collects no personal data, so it is safe for a kids' site. It exists to count
+  visits and see where kids drop off. No other tracker, ever; no fingerprinting.
+- Outbound POSTs to third parties are allowed only for: lesson feedback and
+  parent-email capture (Formspree) and the diploma email (EmailJS REST). Every
+  id shipped in client code is a public submit-only identifier, never a secret.
+  Email may only ever be asked of a GROWN-UP — never collect a kid's email
+  (COPPA), and every email ask must have a skip path.
+- Runtime deps: react, react-dom, next. Nothing else without a written reason
+  here (GoatCounter is a script tag; EmailJS is called via plain fetch — no
+  new deps).
 - All state in localStorage, touched only inside effects/event handlers.
 - `src/lib/curriculum.ts` is the single source of truth for classes/vocab/parts.
 - `npm run build` must pass on every commit; one task per commit, imperative message.

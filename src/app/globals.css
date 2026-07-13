@@ -210,6 +210,8 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 .foot b { color: var(--yellow); }
 .foot p { margin: 0 0 8px; }
 .foot-tiny { font-size: 12.5px; margin: 0; }
+.foot a { color: var(--blue); font-weight: 700; }
+.foot-count { font-family: var(--display); font-weight: 700; color: var(--yellow); }
 
 /* ── landing: live class cards are doors ─────────────────── */
 .classcard-go { text-decoration: none; color: inherit; transition: transform 0.15s, box-shadow 0.15s; }

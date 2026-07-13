@@ -5,6 +5,7 @@ import { ClassStatus } from "@/components/class-status";
 import { DoneStamp } from "@/components/done-stamp";
 import { GradCard } from "@/components/grad-card";
 import { TeacherGate } from "@/components/teacher-gate";
+import { VisitCount } from "@/components/visit-count";
 
 /** The lowest class not yet built — its card wears the "being built" badge. */
 const NEXT_BUILD = Math.min(...CLASSES.filter((c) => !c.live).map((c) => c.num));
@@ -128,6 +129,7 @@ export default function Home() {
           <b>The honesty rule:</b> everything your robot does is truly computed from
           what you teach it. No canned demos anywhere — a 9-year-old can smell canned.
         </p>
+        <VisitCount />
         <p className="foot-tiny">built by a dad &amp; Claude, for one particular young scientist 🔬</p>
       </footer>
     </main>
