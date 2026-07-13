@@ -20,8 +20,17 @@ import { NowStrip } from "@/components/now-strip";
 import { loadSchool, partsFor, setTeacherName } from "@/lib/progress";
 import { CLASSES } from "@/lib/curriculum";
 import { allClassesDone, QUESTIONS } from "@/lib/grad";
+import { captureParentEmail, sendDiplomaEmail } from "@/lib/mailer";
 
-type Stage = "boot" | "gate" | "intro" | "quiz" | "diploma";
+/**
+ * "shared" renders a diploma reconstructed from ?r=&t=&d= query params —
+ * it's what a grown-up sees when they open the emailed diploma link on a
+ * device that never taught a class.
+ */
+type Stage = "boot" | "gate" | "intro" | "quiz" | "diploma" | "shared";
+
+/** Where the parent-email ask is in its life. */
+type MailStep = "closed" | "ask" | "sending" | "sent" | "noted" | "failed" | "skipped";
 
 const CLASS_SLUGS = CLASSES.map((c) => c.slug);
 const ALL_PARTS = ["eyes", "memory", "bulb", "ears", "voice", "antenna", "brain", "decoder", "arms", "clipboard"];
@@ -62,8 +71,27 @@ export function Graduation() {
   // diploma state
   const [teacherInput, setTeacherInput] = useState("");
   const [signedName, setSignedName] = useState("");
+  const [sharedDate, setSharedDate] = useState("");
+
+  // parent-email-before-print state
+  const [mailStep, setMailStep] = useState<MailStep>("closed");
+  const [parentEmail, setParentEmail] = useState("");
+  const [mailHint, setMailHint] = useState(false);
 
   useEffect(() => {
+    // An emailed diploma link carries the names in the URL — show that
+    // diploma directly, no quiz and no localStorage needed.
+    const p = new URLSearchParams(window.location.search);
+    const sharedRobot = p.get("r");
+    const sharedTeacher = p.get("t");
+    if (sharedRobot && sharedTeacher) {
+      setName(sharedRobot.slice(0, 14));
+      setSignedName(sharedTeacher.slice(0, 24));
+      setSharedDate(p.get("d") ?? "");
+      setStage("shared");
+      return;
+    }
+
     const s = loadSchool();
     if (s.robotName) setName(s.robotName);
     setDone(s.done);
@@ -108,6 +136,45 @@ export function Graduation() {
     setTeacherName(trimmed);
   }
 
+  /** A link that re-renders this exact diploma on any device (see "shared"). */
+  function diplomaUrl(): string {
+    const q = new URLSearchParams({
+      r: name,
+      t: signedName || teacherInput.trim(),
+      d: new Date().toLocaleDateString(),
+    });
+    return `${window.location.origin}${window.location.pathname}?${q.toString()}`;
+  }
+
+  function requestPrint() {
+    // First print attempt opens the grown-up-email ask (DESIGN.md §8: with
+    // a skip path); once it's been answered either way, print freely.
+    if (mailStep === "closed") setMailStep("ask");
+    else window.print();
+  }
+
+  async function sendAndPrint(e: React.FormEvent) {
+    e.preventDefault();
+    const email = parentEmail.trim();
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      setMailHint(true);
+      return;
+    }
+    setMailStep("sending");
+    const mail = {
+      parentEmail: email,
+      teacher: signedName || teacherInput.trim() || "the teacher",
+      robot: name,
+      diplomaUrl: diplomaUrl(),
+    };
+    const [sent, captured] = await Promise.all([
+      sendDiplomaEmail(mail),
+      captureParentEmail(mail),
+    ]);
+    setMailStep(sent ? "sent" : captured ? "noted" : "failed");
+    window.print();
+  }
+
   const parts = stage === "gate" ? partsFor(done) : ALL_PARTS;
 
   const speech = (() => {
@@ -116,7 +183,8 @@ export function Graduation() {
       case "gate": return "not ready yet";
       case "intro": return "😰 gulp…";
       case "quiz": return revealed ? "😊 phew!" : "🤔 psst, teacher…";
-      case "diploma": return "🎉 !";
+      case "diploma":
+      case "shared": return "🎉 !";
     }
   })();
 
@@ -127,8 +195,8 @@ export function Graduation() {
         <span className="lsn-crumb">🎓 Graduation Day</span>
       </header>
 
-      <div className={`lsn-bot grad-bot-wrap${stage === "diploma" ? " grad-capped" : ""}`}>
-        {stage === "diploma" && <div className="grad-cap" aria-hidden>🎓</div>}
+      <div className={`lsn-bot grad-bot-wrap${stage === "diploma" || stage === "shared" ? " grad-capped" : ""}`}>
+        {(stage === "diploma" || stage === "shared") && <div className="grad-cap" aria-hidden>🎓</div>}
         <StudentBot parts={parts} speech={speech} />
       </div>
 
@@ -236,27 +304,100 @@ export function Graduation() {
             </div>
           </form>
 
-          <div className="grad-diploma" id="grad-diploma">
-            <div className="grad-diploma-crest" aria-hidden>🤖</div>
-            <div className="grad-diploma-school">ROBOT SCHOOL</div>
-            <div className="grad-diploma-title">DIPLOMA OF ROBOT-TEACHING</div>
-            <div className="grad-diploma-trophy" aria-hidden>🏆</div>
-            <p className="grad-diploma-body">
-              This certifies that <b>{name}</b> — taught, part by part, by{" "}
-              <b>{signedName || "________"}</b> — has graduated from Robot
-              School, and now knows AI from tokens to agents.
-            </p>
-            <div className="grad-diploma-date">{new Date().toLocaleDateString()}</div>
-            <div className="grad-diploma-stars" aria-hidden>🏅 ⭐ ⭐ ⭐ 🏅</div>
-            <div className="grad-diploma-url">saagniho.github.io/robot-school</div>
-          </div>
+          <DiplomaSheet robot={name} teacher={signedName} date={new Date().toLocaleDateString()} />
 
-          <button type="button" className="bigbtn lsn-go grad-print" onClick={() => window.print()}>
-            🖨️ Print my diploma
-          </button>
+          {(mailStep === "ask" || mailStep === "sending") && (
+            <form className="grad-mail" onSubmit={sendAndPrint}>
+              <label className="grad-mail-q" htmlFor="grad-parent-email">
+                📬 One thing first — a grown-up&rsquo;s email, and we&rsquo;ll
+                send {name}&rsquo;s diploma there too:
+              </label>
+              <div className="grad-mail-row">
+                <input
+                  id="grad-parent-email"
+                  className="rs1-nameinput"
+                  type="email"
+                  value={parentEmail}
+                  onChange={(e) => {
+                    setParentEmail(e.target.value);
+                    setMailHint(false);
+                  }}
+                  placeholder="grown-up@example.com"
+                  autoComplete="email"
+                />
+                <button type="submit" className="bigbtn" disabled={mailStep === "sending"}>
+                  {mailStep === "sending" ? "Sending…" : "✉️ Send & print"}
+                </button>
+              </div>
+              {mailHint && <p className="lsn-hint">That doesn&rsquo;t look like an email address yet.</p>}
+              <button
+                type="button"
+                className="grad-skip"
+                onClick={() => {
+                  setMailStep("skipped");
+                  window.print();
+                }}
+              >
+                skip — just print
+              </button>
+            </form>
+          )}
+          {mailStep === "sent" && (
+            <p className="grad-mail-note">✉️ Diploma emailed — check the grown-up&rsquo;s inbox!</p>
+          )}
+          {mailStep === "noted" && (
+            <p className="grad-mail-note">📮 Email received — Robot School HQ will send the diploma along.</p>
+          )}
+          {mailStep === "failed" && (
+            <p className="grad-mail-note grad-mail-err">
+              Couldn&rsquo;t send right now — the printed copy still counts!
+            </p>
+          )}
+
+          {mailStep !== "ask" && mailStep !== "sending" && (
+            <button type="button" className="bigbtn lsn-go grad-print" onClick={requestPrint}>
+              🖨️ Print my diploma
+            </button>
+          )}
           <Link href="/" className="bigbtn grad-home">🏫 Back to school</Link>
         </section>
       )}
+
+      {stage === "shared" && (
+        <section className="lsn-card rs3-report">
+          <div className="rs3-report-head">ROBOT SCHOOL · GRADUATION</div>
+          <h1 className="grad-headline">🎓 {name} GRADUATED!</h1>
+          <p className="grad-stat">This diploma came home by email — hot off the press.</p>
+          <DiplomaSheet
+            robot={name}
+            teacher={signedName}
+            date={sharedDate || new Date().toLocaleDateString()}
+          />
+          <button type="button" className="bigbtn lsn-go grad-print" onClick={() => window.print()}>
+            🖨️ Print the diploma
+          </button>
+          <Link href="/" className="bigbtn grad-home">🏫 Visit Robot School</Link>
+        </section>
+      )}
     </main>
+  );
+}
+
+function DiplomaSheet({ robot, teacher, date }: { robot: string; teacher: string; date: string }) {
+  return (
+    <div className="grad-diploma" id="grad-diploma">
+      <div className="grad-diploma-crest" aria-hidden>🤖</div>
+      <div className="grad-diploma-school">ROBOT SCHOOL</div>
+      <div className="grad-diploma-title">DIPLOMA OF ROBOT-TEACHING</div>
+      <div className="grad-diploma-trophy" aria-hidden>🏆</div>
+      <p className="grad-diploma-body">
+        This certifies that <b>{robot}</b> — taught, part by part, by{" "}
+        <b>{teacher || "________"}</b> — has graduated from Robot School, and
+        now knows AI from tokens to agents.
+      </p>
+      <div className="grad-diploma-date">{date}</div>
+      <div className="grad-diploma-stars" aria-hidden>🏅 ⭐ ⭐ ⭐ 🏅</div>
+      <div className="grad-diploma-url">saagniho.github.io/robot-school</div>
+    </div>
   );
 }

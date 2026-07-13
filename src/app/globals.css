@@ -1179,6 +1179,21 @@ h1, h2, h3 { font-family: var(--display); margin: 0; }
 .grad-diploma-date { font-weight: 700; font-size: 13px; color: #8a6a12; }
 .grad-diploma-stars { margin-top: 8px; font-size: 16px; letter-spacing: 6px; }
 
+.grad-mail {
+  margin: 0 0 18px; padding: 14px 16px; text-align: left;
+  background: var(--panel); border: 2px dashed var(--line-2); border-radius: 13px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.grad-mail-q { font-weight: 800; font-size: 14px; color: var(--ink); margin: 0; }
+.grad-mail-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.grad-mail-row .rs1-nameinput { flex: 1 1 200px; }
+.grad-skip {
+  align-self: flex-start; background: none; border: none; cursor: pointer; padding: 0;
+  color: var(--mute); font-weight: 700; font-size: 13px; text-decoration: underline;
+}
+.grad-mail-note { font-weight: 800; color: var(--green); margin: 0 0 14px; }
+.grad-mail-err { color: var(--orange); }
+
 .grad-print { margin-right: 10px; }
 .grad-home { background: var(--panel-2); color: var(--ink); border: 2px solid var(--line-2); }
 .grad-home:hover { border-color: var(--yellow); }
